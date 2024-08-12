@@ -1,0 +1,86 @@
+.MyInsights {
+    background-color: var(--primary-color);
+
+    .header {
+        padding: 2rem 0px;
+
+        .title {
+            text-align: center;
+
+            h3 {
+                font-size: var(--font-lg);
+
+                span {
+                    font-size: var(--font-md);
+                }
+            }
+        }
+
+        .flex {
+            margin-top: 2rem;
+            display: flex;
+            gap: 42px;
+            justify-content: center;
+        }
+    }
+
+    .Info_and_Filter {
+        margin: 0 auto;
+        padding: 10px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 600px;
+        border-radius: 10px;
+
+        // border-radius: calc(10px * 2.5);
+        .filter_div {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+
+            select {
+                width: max-content;
+                padding: 6px 0px;
+                // border: none;
+                outline: none;
+                color: var(--main-Bg);
+                font-size: 14px;
+                border: 2px solid #FFF;
+                transition: border-color .3s ease-in-out;
+                background-color: #eaead7;
+                padding: 8px 10px;
+                border-radius: 35px;
+                font-family: Oxygen;
+
+                option {
+                    font-family: Oxygen;
+                }
+
+                &:focus-within {
+                    border-color: var(--star-color);
+                }
+            }
+        }
+
+    }
+
+    .latestInsights {
+        margin: 34px 0px;
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 0px calc(var(--main-p-x) / 2);
+        }
+    }
+
+    .centered {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

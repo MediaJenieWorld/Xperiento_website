@@ -1,0 +1,123 @@
+.Insight_dialog {
+    --bg: var(--main-bg);
+    --pop-up-menu-height: max-content;
+    --pop-up-menu-width: max-content;
+    --modal-gap: 1rem;
+    position: relative;
+    width: 100%;
+    transform-origin: center center;
+
+    .box {
+        padding: 3px 8px;
+        color: var(--star-color);
+        font-size: .8rem;
+        border-radius: 3px;
+        float: right;
+    }
+
+    .closeBtn {
+        display: none;
+        color: rgb(255, 255, 255);
+        padding: .5rem 1rem;
+        position: fixed;
+        top: 60px;
+        z-index: 13;
+        cursor: pointer;
+        right: 0;
+        font-size: 2rem;
+        transition: color .2s ease-in-out;
+
+        &:hover {
+            color: var(--star-color);
+        }
+    }
+
+    .closeLayer {
+        transition: all .3s ease-in-out;
+        position: fixed;
+        visibility: hidden;
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: 100%;
+        backdrop-filter: blur(3px);
+        width: 100%;
+        background-color: rgb(2 2 2 / 75%);
+        z-index: 12;
+        opacity: 0;
+    }
+
+    .menuBox {
+        transition: all .3s ease-in-out;
+        visibility: hidden;
+        position: fixed;
+        width: var(--pop-up-menu-width);
+        height: var(--pop-up-menu-height);
+        min-width: 250px;
+        padding: 10px;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        z-index: 13;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: top left;
+        background-color: transparent;
+        opacity: 0;
+        scale: 0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: flex-end;
+
+        img {
+            min-width: 350px;
+            width: 100%;
+            object-fit: cover;
+            height: 80%;
+            max-height: 75vh;
+        }
+    }
+
+    &.active {
+        .closeBtn {
+            display: block;
+        }
+
+        .box {
+            background-color: orange;
+            color: white;
+        }
+
+        .closeLayer {
+            scale: 1;
+            opacity: 1;
+            visibility: visible;
+            border-radius: 0%;
+            border: 1px solid transparent;
+        }
+
+        .menuBox {
+            scale: 1;
+            opacity: 1;
+            visibility: visible;
+            border-radius: 0%;
+        }
+    }
+
+    &.close {
+        .closeLayer {
+            scale: 0;
+            opacity: 0;
+            visibility: hidden;
+            border-radius: 50%;
+        }
+
+        .menuBox {
+            scale: 0;
+            opacity: 0;
+            visibility: hidden;
+            border-radius: 50%;
+        }
+    }
+
+}

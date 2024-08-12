@@ -1,0 +1,184 @@
+.ClueberryDashboardPage {
+    --border-light-color: #353535;
+    padding: var(--main-p-x);
+    min-height: calc(100vh - 60px);
+    background-color: var(--main-Bg);
+    overflow-x: hidden;
+
+    h2 {
+        color: var(--primary-color);
+        margin-bottom: 2rem;
+    }
+
+    .links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+
+        .box {
+            flex-direction: column;
+            align-items: flex-start;
+            display: flex;
+            justify-content: center;
+            padding: calc(var(--main-p-x)* 2) var(--main-p-x);
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: var(--font-lg);
+            background-color: #000;
+            border: 1px solid #353535;
+            border-radius: 6px;
+            transition: transform .4s ease-in-out,
+                color .2s ease-in-out;
+
+            svg {
+                height: 24px;
+                width: 50px;
+                object-fit: contain;
+                transition: transform .2s ease-in-out;
+            }
+
+            &:hover {
+                border-color: #fff;
+                background-color: #ffffff12;
+                color: var(--star-color);
+                transform: scale(1.05);
+
+                svg {
+                    transform: translateX(20px) scale(1.2);
+
+                    path {
+                        fill: var(--star-color);
+                    }
+                }
+            }
+        }
+    }
+
+    .data-table {
+        padding: var(--main-p-x) 0;
+        margin: var(--main-p-x) 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+
+        .table-actions {
+            color: var(--primary-color);
+            display: flex;
+            padding: var(--main-p-x);
+            border-radius: 6px;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #353535;
+
+            .actions {
+                display: flex;
+                gap: 1rem;
+
+                button {
+                    padding: 6px 16px;
+                    border-radius: 4px;
+                    color: var(--primary-color);
+                    background-color: transparent;
+                    border: 1px solid #353535;
+                }
+            }
+        }
+
+        .table {
+            overflow-x: scroll;
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid var(--border-light-color);
+
+                thead {
+                    color: var(--star-color);
+                    background-color: var(--main-Bg);
+                    font-weight: bold;
+                    border-bottom: 1px solid var(--border-light-color);
+
+                    th {
+                        padding: 12px;
+                        text-align: left;
+                        border-right: 1px solid var(--border-light-color); // Right border for column separation
+                        white-space: nowrap;
+
+                        // Remove the right border for the last header cell
+                        &:last-child {
+                            border-right: none;
+                        }
+                    }
+                }
+
+                // Row styles
+                tbody {
+
+                    tr {
+                        background-color: var(--main-Bg);
+                        transition: background-color 0.3s;
+
+                        td {
+                            white-space: nowrap;
+                            font-weight: 300;
+                            font-size: .9rem;
+                            padding: 10px;
+                            color: var(--primary-color);
+                            background-color: var(--main-Bg);
+                            border-bottom: 1px solid var(--border-light-color); // Bottom border for rows
+                            border-right: 1px solid var(--border-light-color); // Right border for column separation
+
+                            // Remove the right border for the last cell in each row
+                            &:last-child {
+                                border-right: none;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            .p-paginator-bottom.p-paginator.p-component {
+                overflow: hidden;
+                width: 100%;
+                background-color: var(--main-Bg);
+                display: flex;
+                gap: 1rem;
+                padding: var(--main-p-x);
+
+                .p-dropdown.p-component.p-inputwrapper.p-inputwrapper-filled {
+                    color: var(--primary-color);
+                    padding: 5px;
+                    background-color: #353535;
+                }
+
+                .p-dropdown-items-wrapper {
+                    span.p-dropdown-item-label {
+                        color: var(--star-color);
+                    }
+
+                    ul.p-dropdown-items {
+                        background-color: var(--primary-color);
+                    }
+                }
+
+                button,
+                i {
+                    font-size: 1.5rem;
+                    color: var(--primary-color);
+                }
+
+                button:hover {
+                    background-color: #353535;
+                }
+            }
+        }
+    }
+
+    .p-dropdown-panel.p-component.p-ripple-disabled.p-connected-overlay-enter-done {
+        .p-dropdown-items-wrapper {
+            background-color: red;
+        }
+    }
+}

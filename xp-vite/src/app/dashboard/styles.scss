@@ -1,0 +1,100 @@
+.Main_Dashboard {
+    display: grid;
+    padding: var(--main-p-x);
+    grid-template-columns: repeat(3, 1fr);
+    min-height: calc(100vh - 60px);
+    background-color: var(--main-Bg);
+    grid-template-rows: min-content;
+    align-content: center;
+    grid-auto-flow: row;
+
+    &:has(.box:hover) .box {
+        filter: brightness(.3);
+    }
+
+    .box {
+        height: 200px;
+        flex-direction: column;
+        align-items: flex-start;
+        display: flex;
+        justify-content: center;
+        padding: var(--main-p-x);
+        color: #fff;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: var(--font-lg);
+        transition: transform .4s ease-in-out, color .2s ease-in-out, filter .2s ease-in-out, border-radius .4s ease-in-out;
+        grid-column: span 1;
+
+
+        svg {
+            height: 24px;
+            width: 50px;
+            object-fit: contain;
+            transition: transform .2s ease-in-out;
+        }
+
+        &.col-2 {
+            grid-column: span 2;
+
+            svg {
+                width: 100px;
+            }
+        }
+
+        &.col-3 {
+            grid-column: span 3;
+
+            svg {
+                width: 100px;
+            }
+        }
+
+        &:hover {
+            color: var(--star-color);
+            transform: scale(1.05);
+            z-index: 9;
+            filter: brightness(1) !important;
+            border-radius: 15px;
+
+            &.col-3 {
+                transform: scale(1.03);
+            }
+
+            &~* {
+                filter: brightness(.4);
+            }
+
+            svg {
+                transform: translateX(20px) scale(1.2);
+
+                path {
+                    fill: var(--star-color);
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (max-width: 650px) {
+    .Main_Dashboard {
+        grid-template-columns: repeat(2, 1fr);
+
+        .box {
+            grid-column: span 1;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .Main_Dashboard {
+        display: flex;
+        flex-direction: column;
+
+        .box {
+            height: unset;
+            padding: 2.5rem 1rem;
+        }
+    }
+}

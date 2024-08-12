@@ -1,0 +1,169 @@
+.dialogMenu {
+    --bg: var(--main-bg);
+    --pop-up-menu-height: max-content;
+    --pop-up-menu-width: max-content;
+    --modal-gap: 1rem;
+    position: relative;
+    width: max-content;
+
+    .box {
+        cursor: pointer;
+        height: 30px;
+        width: 30px;
+        background-color: rgba(0, 0, 0, 0.178);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        p {
+            --height: 3px;
+            height: var(--height);
+            width: 100%;
+            background-color: var(--star-color);
+            position: relative;
+            transition: transform 0.3s ease;
+
+            &::before,
+            &::after {
+                position: absolute;
+                content: "";
+                height: var(--height);
+                width: 100%;
+                background-color: var(--star-color);
+                transition: transform 0.3s ease;
+            }
+
+            &::before {
+                top: 50%;
+                left: 0;
+                transform: translateY(6px) rotate(0);
+                transform-origin: center;
+            }
+
+            &::after {
+                top: 50%;
+                left: 0;
+                transform: translateY(-9px) rotate(0);
+                transform-origin: center;
+            }
+        }
+    }
+
+    .closeLayer {
+        transition: all .3s ease-in-out;
+        visibility: hidden;
+        // top: var(--header-h);
+        top: 0px;
+        right: 0px;
+        position: fixed;
+        height: 100%;
+        backdrop-filter: blur(3px);
+        transform-origin: top right;
+        width: 100%;
+        background-color: rgb(2 2 2 / 75%);
+        z-index: 12;
+        opacity: 0;
+        // border: 1px solid var(--primary-color);
+    }
+
+    .menuBox {
+        transition: all .3s ease-in-out;
+        visibility: hidden;
+        position: fixed;
+        transform-origin: right top;
+        width: var(--pop-up-menu-width);
+        height: var(--pop-up-menu-height);
+        min-width: 250px;
+        padding: 10px;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        z-index: 13;
+        top: calc(65px);
+        right: 0px;
+        background-color: transparent;
+        opacity: 0;
+        scale: 0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: flex-end;
+
+        .container,
+        .lists {
+            margin-top: calc(var(--header-h) + 2rem);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 0px 2rem;
+            align-items: flex-end;
+
+            .item {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-size: 1.35rem;
+                cursor: pointer;
+
+                &.button {
+                    border: none;
+                    background-color: transparent;
+                }
+
+                &:hover {
+                    color: var(--star-color);
+                }
+            }
+
+        }
+    }
+
+    &.active {
+        .box {
+            z-index: 13;
+
+            p {
+                background-color: transparent;
+
+
+                &::before {
+                    transform: translateY(-50%) rotate(45deg);
+                }
+
+                &::after {
+                    transform: translateY(-50%) rotate(-45deg);
+                }
+            }
+        }
+
+        .closeLayer {
+            scale: 1;
+            opacity: 1;
+            visibility: visible;
+            border-radius: 0%;
+            border: 1px solid transparent;
+        }
+
+        .menuBox {
+            scale: 1;
+            opacity: 1;
+            visibility: visible;
+            border-radius: 0%;
+        }
+    }
+
+    &.close {
+        .closeLayer {
+            scale: 0;
+            opacity: 0;
+            visibility: hidden;
+            border-radius: 50%;
+        }
+
+        .menuBox {
+            scale: 0;
+            opacity: 0;
+            visibility: hidden;
+            border-radius: 50%;
+        }
+    }
+
+}
