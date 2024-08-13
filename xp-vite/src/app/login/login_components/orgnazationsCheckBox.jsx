@@ -5,7 +5,7 @@ import { getCategoryAndSubCategories } from "@/api/Main_Api";
 import { toast } from "react-toastify";
 
 // eslint-disable-next-line react/prop-types
-const Orgnazations = ({ register, errors, businessType, isCreatingAccount, setBusinessType }) => {
+const Orgnazations = ({ category_Id, register, errors, businessType, isCreatingAccount, setBusinessType }) => {
 
     const [categoriesAndSub, setCategoriesAndSub] = useState([])
     const [isError, setIsError] = useState(null)
@@ -39,12 +39,11 @@ const Orgnazations = ({ register, errors, businessType, isCreatingAccount, setBu
     categoriesAndSub.forEach((item) => {
         formattedResults[item._id] = item.subCategories;
     });
-
     return (
         <>
             <div data-state={isCreatingAccount} className="radio-btn">
                 {categoriesAndSub.map((category, ind) => {
-                    const isActive = businessType === category.name ? true : false;
+                    const isActive = businessType === category._id ? true : false;
                     return <div data-tooltip={category._id} onClick={() => setBusinessType(category._id)} key={ind} className="box">
                         <img height={60} width={60} src={category.icon[0].includes("http") ? category.icon[0] : "/assets/account/" + category.icon[0]} alt={category._id} />
                         {isActive && <i
@@ -61,7 +60,7 @@ const Orgnazations = ({ register, errors, businessType, isCreatingAccount, setBu
                     Organisation is Required
                 </span>
             )}
-            <div id="subCategory" data-state={isCreatingAccount} className="flex-column">
+            <div data-state={isCreatingAccount} className="flex-column subCategory">
                 <label>Organisation Sub Category:</label>
                 <div className="items">
                     {!businessType &&
@@ -71,7 +70,7 @@ const Orgnazations = ({ register, errors, businessType, isCreatingAccount, setBu
                         </div>}
                     {businessType && formattedResults[businessType]?.map((category, index) => (
                         <div className="item" key={index}>
-                            <input id={category} type="radio" value={category} {...register('organization_SubCategory')} />
+                            <input id={category} type="radio" value={category} defaultChecked={category_Id?.subCategory === category ? true : false} {...register('organization_SubCategory')} />
                             <label htmlFor={category} className="r-label"></label>
                             <label htmlFor={category}>{category}</label>
                         </div>

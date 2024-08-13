@@ -10,7 +10,6 @@ const UserCustomerProfile_DataTable = () => {
   const [deleteActionloading, setdeleteActionLoading] = useState(false)
   const [data, setData] = useState(null)
 
-
   async function deleteStaffHandler(id) {
     if (!id || deleteActionloading) return
     try {
@@ -58,7 +57,10 @@ const UserCustomerProfile_DataTable = () => {
 
   const actionBodyTemplate = (data) => {
     return <>
-      {data.role !== "admin" && <div className='actions'> <i style={{ color: "#03A9F4" }} className='pi pi-pen-to-square'></i>
+      {data.role !== "admin" && <div className='actions'>
+        <a style={{ textDecoration: "none" }} href={`/dashboard/User_Management/update-staff-profile/${data._id}`}>
+          <i style={{ color: "#03A9F4" }} className='pi pi-pen-to-square'></i>
+        </a>
         <Custom_Centered_DynamicDialog LabelChildren={() => <i style={{ color: "#F44336" }} className="pi pi-trash"></i>} >
           <div className="model-wrapper">
             <h2 className="wrapper-heading">Confirm Delete Staff</h2>
@@ -95,7 +97,7 @@ const UserCustomerProfile_DataTable = () => {
 
   return (
     <>
-      <DataTable sortMode="multiple" pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }} showGridlines value={data} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
+      <DataTable sortMode="multiple" removableSort pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }} showGridlines value={data} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
       >
         <Column sortable field={"_id"} header={"Unique Id"} />

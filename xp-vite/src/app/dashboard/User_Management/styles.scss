@@ -6,6 +6,17 @@
     overflow-x: hidden;
     color: var(--primary-color);
 
+    .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+
+        button {
+            padding: 5px 10px;
+        }
+    }
+
     .model-wrapper {
         background: #434343a3;
         padding: 12px 18px;

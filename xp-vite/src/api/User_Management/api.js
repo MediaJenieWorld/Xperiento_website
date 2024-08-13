@@ -5,3 +5,15 @@ export const getUser_Management_Dashboard_Profiles = async () => {
     instance.get("User_Management/getDashboard_Profiles")
   );
 };
+
+export const getStaffDetailsHandler = async (id) => {
+  return handleRequest(() =>
+    instance.get(`User_Management/staff-profile/${id}`)
+  );
+};
+
+export const updateStaffDetailsHandler = async (payload) => {
+  return handleRequest(() =>
+    instance.post(`User_Management/update-staff-profile/`, payload)
+  );
+};

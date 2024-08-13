@@ -1,28 +1,40 @@
-
-import "./style.scss"
-import FormInput from "@/app/login/login_components/FormInput"
+import "./style.scss";
+import FormInput from "@/app/login/login_components/FormInput";
 import { useForm } from "react-hook-form";
-import { viewProfile_Api } from "@/api/Main_Api";
 import { useEffect, useState } from "react";
-import Orgnazations from "@/app/login/login_components/orgnazationsCheckBox";
 import AddressForm from "@/app/login/login_components/AddressForm";
-const UpdateProfilePage = () => {
+import Orgnazations from "@/app/login/login_components/orgnazationsCheckBox";
+import { getStaffDetailsHandler, updateStaffDetailsHandler } from "@/api/User_Management/api";
+import { useParams } from "react-router-dom";
+import BackButton from "@/components/ui/BackButton";
+import { toast } from "react-toastify"
+
+const Staff_Profile_Update_Page = () => {
     const [businessType, setBusinessType] = useState(null);
     const [user, setUser] = useState(null);
     const [isLoading, setLoading] = useState(true);
+    const { id } = useParams();
 
     async function get_UserDataHandler() {
-        setLoading(true)
+        setLoading(true);
         try {
-            const res = await viewProfile_Api()
+            const res = await getStaffDetailsHandler(id);
             if (res.data.success || res.status == 200) {
-                setUser(res.data.data)
+                const staffData = res.data.data;
+                setUser(staffData);
+                setBusinessType(staffData?.category_Id?.category);
             }
         } catch (error) {
             console.log(error.error);
         }
-        setLoading(false)
+        setLoading(false);
     }
+
+    useEffect(() => {
+        get_UserDataHandler();
+    }, []);
+
+
 
     const {
         register,
@@ -30,21 +42,40 @@ const UpdateProfilePage = () => {
         setValue,
         formState: { errors },
     } = useForm({
-        defaultValues: {
-        },
+        defaultValues: {},
     });
 
     useEffect(() => {
-        get_UserDataHandler()
         if (user) {
-            setBusinessType(user.organization)
-        }
-    }, []);
-    useEffect(() => {
-        if (user) {
-            setBusinessType(user.organization)
+            const {
+                firstName,
+                lastName,
+                country,
+                state,
+                city,
+                pinCode,
+                email,
+                phoneNumber,
+                category_Id,
+                role,
+            } = user;
+            const y = {
+                firstName,
+                lastName,
+                country,
+                state,
+                city,
+                pinCode,
+                email,
+                role,
+                phoneNumber,
+                category_Id,
+            };
+            objMap(y);
         }
     }, [user]);
+
+
     if (isLoading) {
         return (
             <div className="dashboard">
@@ -60,71 +91,135 @@ const UpdateProfilePage = () => {
             </div>
         );
     }
-    if (user) {
-        const {
-            firstName,
-            lastName,
-            country,
-            state,
-            city,
-            pinCode,
-            organization,
-            organization_SubCategory,
-            industrySegment,
-        } = user
-        const y = {
-            firstName,
-            lastName,
-            country,
-            state,
-            city,
-            pinCode,
-            organization,
-            organization_SubCategory,
-            industrySegment,
-        }
-        objMap(y)
-    }
-
 
     function objMap(obj) {
         Object.keys(obj).forEach((key) => {
             setValue(key, obj[key]);
         });
     }
-
-    const onSubmit = (data) => {
-        console.log("Form Data", data);
-    }
+    const onSubmit = async (data) => {
+        try {
+            const res = await updateStaffDetailsHandler({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phoneNumber: data.phoneNumber,
+                pinCode: data.pinCode,
+                country: data.country,
+                state: data.state,
+                city: data.city,
+                organization_SubCategory: data.organization_SubCategory, organization: businessType, staff_id: id
+            })
+            if (res.data.success) {
+                setUser(pre => {
+                    const x = { ...pre }
+                    return { ...x, ...data }
+                })
+                toast.success("Data Updated Successfully")
+                setTimeout(() => {
+                    window.location.pathname = "/dashboard/User_Management/"
+                }, 1200);
+            } else {
+                toast.error(res.data.data)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    };
     return (
         <div className="update_profile_page">
+            <div
+                style={{ textAlign: "left", width: "100%", padding: "0px 2rem" }}
+                className="div"
+            >
+                <BackButton href="/dashboard/User_Management/" />
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h3>Update Profile Page</h3>
+                <h3>Update Staff Profile</h3>
                 <div className="flex-column">
-                    <FormInput register={register} errors={errors} register_key={"firstName"} label={"First Name"} />
+                    <FormInput
+                        register={register}
+                        errors={errors}
+                        register_key={"firstName"}
+                        label={"First Name"}
+                    />
                 </div>
                 <div className="flex-column">
-                    <FormInput register={register} errors={errors} register_key={"lastName"} label={"Last Name"} />
+                    <FormInput
+                        register={register}
+                        errors={errors}
+                        register_key={"lastName"}
+                        label={"Last Name"}
+                    />
                 </div>
                 <div className="flex-column">
-                    <FormInput register={register} errors={errors} register_key={"industrySegment"} label={"Business Name"} type="text" />
+                    <FormInput
+                        register={register}
+                        errors={errors}
+                        inputProps={{ disabled: true }}
+                        register_key={"email"}
+                        label={"Email Address"}
+                    />
                 </div>
-                <AddressForm setValue={setValue} errors={errors} register={register} profileUpdateData={{
-                    country: user.country,
-                    state: user.state,
-                    city: user.city,
-                }} />
                 <div className="flex-column">
-                    <FormInput register={register} errors={errors} register_key={"pinCode"} label={"Zip/Pin Code"} type="number" />
+                    <FormInput
+                        register={register}
+                        errors={errors}
+                        register_key={"phoneNumber"}
+                        label={"Phone Number"}
+                    />
                 </div>
-                <Orgnazations errors={errors}
+                <div className="flex-column">
+                    <label>Business Name</label>
+                    <input type="text" value={user.business_Id.name} />
+                </div>
+                <AddressForm
+                    setValue={setValue}
+                    errors={errors}
+                    register={register}
+                    profileUpdateData={{
+                        country: user.country,
+                        state: user.state,
+                        city: user.city,
+                    }}
+                />
+                <div className="flex-column">
+                    <FormInput
+                        register={register}
+                        errors={errors}
+                        register_key={"pinCode"}
+                        label={"Zip/Pin Code"}
+                        type="number"
+                    />
+                </div>
+                <Orgnazations
+                    errors={errors}
+                    category_Id={user.category_Id}
                     setBusinessType={setBusinessType}
                     register={register}
-                    businessType={businessType} />
-                <button type="submit" className="start link">Update</button>
+                    businessType={businessType}
+                />
+                <div className="flex-column subCategory">
+                    <label>Role</label>
+
+                    <div className="items">
+                        <div className="item">
+                            <input disabled={true} id={"admin"} type="radio" value={"admin"}  {...register('role')} />
+                            <label htmlFor={"admin"} className="r-label"></label>
+                            <label htmlFor={"admin"}>Admin</label>
+                        </div>
+                        <div className="item">
+                            <input disabled={true} id={"staff"} type="radio" value={"staff"}  {...register('role')} />
+                            <label htmlFor={"staff"} className="r-label"></label>
+                            <label htmlFor={"staff"}>Staff</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" className="start link">
+                    Update
+                </button>
             </form>
         </div>
-    )
-}
+    );
+};
 
-export default UpdateProfilePage
+export default Staff_Profile_Update_Page;

@@ -5,7 +5,12 @@ import "./styles.scss"
 const User_Management_DashboardPage = () => {
     return (
         <div className='User_Management'>
-            <h1>User Management</h1>
+            <div className="header">
+                <h1>User Management</h1>
+                <button className="start p-0">
+                    Add Staff
+                </button>
+            </div>
             <div className="data-table">
                 <div className="table-actions">
                     <h4>Staff Profiles</h4>
