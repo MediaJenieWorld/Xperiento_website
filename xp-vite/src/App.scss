@@ -204,43 +204,43 @@
       }
     }
 
-    #subCategory {
-      .items {
-        padding-right: 1em;
+    .items {
+      padding-right: 1em;
+      display: flex;
+      margin-top: 1em;
+      gap: 1em;
+      overflow-x: auto;
+      padding-bottom: .75em;
+
+      .item {
+        width: min-content;
         display: flex;
-        margin-top: 1em;
-        gap: 1em;
-        overflow-x: auto;
-        padding-bottom: .75em;
+        gap: .5em;
 
-        .item {
-          display: flex;
-          gap: .5em;
+        input {
+          height: 20px;
+          width: 20px;
+          display: none;
+        }
 
-          input {
-            height: 20px;
-            width: 20px;
-            display: none;
-          }
+        .r-label {
+          padding: 10px;
+          border-radius: 50%;
+          background-color: #fff;
+          box-shadow: 0px 0px 0px 3px white inset;
+        }
 
-          .r-label {
-            padding: 10px;
-            border-radius: 50%;
-            background-color: #fff;
-            box-shadow: 0px 0px 0px 3px white inset;
-          }
+        input:checked+.r-label {
+          background-color: var(--star-color);
+          box-shadow: 0px 0px 0px 1px #FF5722 inset;
+        }
 
-          input:checked+.r-label {
-            background-color: var(--star-color);
-            box-shadow: 0px 0px 0px 1px #FF5722 inset;
-          }
-
-          label {
-            white-space: nowrap;
-          }
+        label {
+          white-space: nowrap;
         }
       }
     }
+
 
     .Subscription {
       margin-top: 1rem;

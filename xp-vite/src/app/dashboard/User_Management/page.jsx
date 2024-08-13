@@ -8,7 +8,9 @@ const User_Management_DashboardPage = () => {
             <div className="header">
                 <h1>User Management</h1>
                 <button className="start p-0">
-                    Add Staff
+                    <a style={{ color: "var(--main-Bg)", textDecoration: "none" }} href="/dashboard/User_Management/CreateStaffToken">
+                        Add Staff
+                    </a>
                 </button>
             </div>
             <div className="data-table">

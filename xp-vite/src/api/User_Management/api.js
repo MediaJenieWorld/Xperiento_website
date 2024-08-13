@@ -17,3 +17,9 @@ export const updateStaffDetailsHandler = async (payload) => {
     instance.post(`User_Management/update-staff-profile/`, payload)
   );
 };
+
+export const generateAddStaffTokenHandler = async (payload) => {
+  return handleRequest(() =>
+    instance.post(`User_Management/generateAddStaffToken`, payload)
+  );
+};

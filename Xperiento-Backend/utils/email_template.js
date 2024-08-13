@@ -7,7 +7,6 @@ const generateEmailVerification = (token) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Email Verification</title>
   <style>
-    /* Reset styles */
     body, h1, h3, p, div {
       margin: 0;
       padding: 0;
@@ -80,7 +79,6 @@ const generateForgotPasswordEmail = (link) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Forgot Password</title>
     <style>
-      /* Reset styles */
       body,
       h1,
       h3,
@@ -175,4 +173,104 @@ const generateForgotPasswordEmail = (link) => {
 </html>
 `;
 };
-module.exports = { generateEmailVerification, generateForgotPasswordEmail };
+const sendAddStaffTokenEmail = ({ token, senderEmail }) => {
+  return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Token of Xperiento</title>
+    <style>
+      body,
+      h1,
+      h3,
+      p,
+      div {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+      }
+      .logo {
+        text-align: center;
+        color: #000000;
+        margin: 1rem 0;
+      }
+      span {
+        color: #ffd74a;
+        font-size: 2.2rem;
+      }
+
+      h3 {
+        color: #333333;
+        margin: 1rem 0;
+      }
+      p {
+        color: #666666;
+        margin: 1rem 0;
+      }
+      .email {
+        margin-bottom: 20px;
+      }
+      .token {
+        background-color: #ffd74a;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 6px;
+        margin: 1rem 0;
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+      .reset-link {
+        padding-top: 1rem;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 6px;
+        margin: 1rem 0;
+        font-weight: 700;
+        text-align: center;
+        background-color: #ffd74a;
+      }
+      a, p {
+        text-align: left;
+        color: #ffd74a;
+      }
+      h4 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo"><span> X</span>periento</h1>
+      <h3>Business Token for Staff</h3>
+      <div class="reset-link">
+        <p>${token}</p>
+      </div>
+      <div class="email">
+        <p>Sent by: <strong>${senderEmail}</strong></p>
+      </div>
+    </div>
+  </body>
+</html>
+`;
+};
+
+module.exports = {
+  generateEmailVerification,
+  generateForgotPasswordEmail,
+  sendAddStaffTokenEmail,
+};

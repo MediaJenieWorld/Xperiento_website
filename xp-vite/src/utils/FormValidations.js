@@ -32,10 +32,6 @@ const email = {
 
 const businessName = {
   required: "Business Name is required",
-  maxLength: {
-    value: 30,
-    message: "Length cannot exceed 30 characters",
-  },
 };
 const pinCode = {
   required: "Pin Code is required",

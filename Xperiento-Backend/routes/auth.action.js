@@ -152,8 +152,6 @@ router.post("/forgotpassword", async (req, res) => {
 });
 
 router.post("/sendCodeToEmail", async (req, res) => {
-  console.log("sendCodeToEmail");
-
   try {
     const { email, phoneNumber } = req.body;
     const payload = req.body;
@@ -188,19 +186,15 @@ router.post("/sendCodeToEmail", async (req, res) => {
         data: "Branch is Already Exists! write branch_Id in Businesss Name",
       });
     }
-    const isIdOrNewName = mongoose.Types.ObjectId.isValid(
-      payload.industrySegment
+    const isIdOrNewName = decodeStaffToken(
+      payload.industrySegment,
+      encodeKey,
+      res
     );
 
     if (isIdOrNewName) {
-      const isBranch = await Branch.findById({ _id: payload.industrySegment });
-      if (isBranch) {
-        payload.isBranchExists = true;
-        payload.branchCode = payload.industrySegment;
-      } else {
-        payload.isBranchExists = false;
-        payload.branchCode = payload.industrySegment;
-      }
+      payload.isBranchExists = true;
+      payload.branchCode = payload.industrySegment;
     } else {
       payload.isBranchExists = false;
       payload.branchCode = payload.industrySegment;
@@ -278,7 +272,27 @@ router.post("/confirmVerifyEmail", async (req, res) => {
 
     verifyCode.isBranchExists;
     if (verifyCode.isBranchExists) {
-      user.business_Id = verifyCode.branchCode;
+      const tokenDecode = decodeStaffToken(
+        verifyCode.branchCode,
+        encodeKey,
+        res
+      );
+
+      const findAdmin = await User.findOne(
+        { email: tokenDecode.user.admin_email, role: "admin" },
+        { business_Id: 1 }
+      ).lean();
+      if (tokenDecode.user.staffEmail !== verifyCode.email) {
+        return res
+          .status(200)
+          .json({ data: "Staff Email is not Matched", success: false });
+      }
+      if (!findAdmin) {
+        return res
+          .status(200)
+          .json({ data: "Business Admin Not Found", success: false });
+      }
+      user.business_Id = findAdmin.business_Id;
       user.role = "staff";
     } else {
       const branch = new Branch({
@@ -366,4 +380,17 @@ function generateRandomCode() {
   }
 
   return code;
+}
+
+function decodeStaffToken(token, secretKey, res) {
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    return decoded;
+  } catch (err) {
+    res.status(200).json({
+      data: err.message,
+      success: false,
+    });
+    return null;
+  }
 }

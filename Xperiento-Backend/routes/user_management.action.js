@@ -3,13 +3,26 @@ const User = require("../models/User_Customer");
 const router = express.Router();
 const mongoose = require("mongoose");
 const BusinessCategory = require("../models/BusinessCategory");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { sendAddStaffTokenEmail } = require("../utils/email_template");
+
+require("dotenv").config();
+const encodeKey = process.env.ENCODE_KEY;
+const user_mail_address = process.env.MAIL_ADDRESS;
+const user_mail_password = process.env.Mail_PASS;
+const login_Token_Vaildity = process.env.LOGIN_TOKEN_VAILDITY;
+
 router.get("/getDashboard_Profiles", async (req, res) => {
   try {
     const user_id = req.user;
-    const user = await User.findById(user_id, {
-      _id: 1,
-      business_Id: 1,
-    });
+    const user = await User.findOne(
+      { _id: user_id, role: "admin" },
+      {
+        _id: 1,
+        business_Id: 1,
+      }
+    ).lean();
 
     if (!user) {
       return res.status(200).json({ data: "User Not Found", success: false });
@@ -191,6 +204,86 @@ router.post("/update-staff-profile", async (req, res) => {
     );
 
     return res.json({ data: updateStaff, success: true });
+  } catch (error) {
+    res.status(500).json({ data: error.message, success: false });
+  }
+});
+
+router.post("/generateAddStaffToken", async (req, res) => {
+  try {
+    const staff = req.body;
+
+    function isValidEmail(email) {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    }
+    const checkEmail = isValidEmail(staff.email);
+
+    if (!checkEmail) {
+      return res
+        .status(200)
+        .json({ data: "Value is not a Vaild Email", success: false });
+    }
+
+    const user_id = req.user;
+    const user = await User.findOne(
+      { _id: user_id, role: "admin" },
+      {
+        _id: 1,
+        business_Id: 1,
+        email: 1,
+      }
+    ).lean();
+
+    if (!user) {
+      return res.status(200).json({ data: "User Not Found", success: false });
+    }
+
+    const findStaffEmail = await User.findOne({ email: staff.email }).lean();
+
+    if (findStaffEmail) {
+      return res.status(200).json({
+        data: `User with this Email (${staff.email}) is Already Exists`,
+        success: false,
+      });
+    }
+
+    const token = jwt.sign(
+      { user: { admin_email: user.email, staffEmail: staff.email } },
+      encodeKey,
+      {
+        expiresIn: login_Token_Vaildity,
+      }
+    );
+
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: user_mail_address,
+        pass: user_mail_password,
+      },
+    });
+
+    // Set up email data
+    let mailOptions = {
+      from: user_mail_address,
+      to: staff.email,
+      subject: "Business Token of Xperiento",
+      html: sendAddStaffTokenEmail({
+        token,
+        senderEmail: user.email,
+      }),
+    };
+
+    // Send email
+    let info = await transporter.sendMail(mailOptions);
+    if (info.rejected.length > 0) {
+      return res.status(200).json({
+        data: `Unable to send Email `,
+        success: false,
+      });
+    }
+    return res.status(200).json({ data: token, extra: info, success: true });
   } catch (error) {
     res.status(500).json({ data: error.message, success: false });
   }
