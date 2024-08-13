@@ -180,11 +180,7 @@ router.post("/getAll_FiltersByAgeGroup", async (req, res) => {
     }
 
     const data = req.body;
-    console.log("Req", req.body);
-
     const filters = filterNonEmptyProperties(data);
-    console.log(filters);
-
     const categories = await Profiles.aggregate([
       {
         $match: {

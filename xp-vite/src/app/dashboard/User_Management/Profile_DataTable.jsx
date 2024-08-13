@@ -5,10 +5,24 @@ import { getUser_Management_Dashboard_Profiles } from '@/api/User_Management/api
 import { toast } from 'react-toastify';
 import Custom_Centered_DynamicDialog from "@/components/ui/Dialog/Center_Dialog"
 import { delete_Staff_Account } from "@/api/Zensight/api";
+import { FilterMatchMode } from 'primereact/api';
+
 
 const UserCustomerProfile_DataTable = () => {
+
   const [deleteActionloading, setdeleteActionLoading] = useState(false)
   const [data, setData] = useState(null)
+  const [tableDataLoading, setTableDataLoading] = useState(true)
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    'email': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'firstName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'lastName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'phoneNumber': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  });
+
 
   async function deleteStaffHandler(id) {
     if (!id || deleteActionloading) return
@@ -31,6 +45,18 @@ const UserCustomerProfile_DataTable = () => {
     setdeleteActionLoading(false)
   }
 
+
+  const onGlobalFilterChange = (e) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+
+    _filters['global'].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+  };
+
+
   async function getData() {
     try {
       const res = await getUser_Management_Dashboard_Profiles()
@@ -38,6 +64,7 @@ const UserCustomerProfile_DataTable = () => {
         const getform = res.data.data
         if (res.data.data.length > 0) {
           setData(getform)
+          setTableDataLoading(false)
         }
         else {
           toast.info("Data Not Found")
@@ -95,19 +122,45 @@ const UserCustomerProfile_DataTable = () => {
     return <div>{data.role.toUpperCase()}</div>;
   };
 
+
+  const renderHeader = () => {
+    return (
+      <>
+        <h4>Business Profiles</h4>
+        <div className="search-box">
+          <input value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
+          <i className='pi pi-search'></i>
+        </div>
+      </>
+    );
+  };
+  const header = renderHeader()
+  const verifiedRowFilterTemplate = (options) => {
+    return <>
+      <input value={options.value} style={{ padding: "4px 10px" }} onChange={(e) => options.filterApplyCallback([from, e.value])} />
+    </>
+  };
+
   return (
     <>
-      <DataTable sortMode="multiple" removableSort pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }} showGridlines value={data} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
+      <DataTable sortMode="multiple" removableSort pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
+        showGridlines value={data} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
+        globalFilterFields={["email", "firstName", "lastName", "phoneNumber"]}
+        loading={tableDataLoading}
+        header={header}
+        filters={filters}
+        filterDisplay="row"
+        emptyMessage="Profiles not found"
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
       >
         <Column sortable field={"_id"} header={"Unique Id"} />
-        <Column sortable field={"firstName"} header={"First Name"} />
-        <Column sortable field={"lastName"} header={"Last Name"} />
-        <Column sortable field={"email"} header={"Email Address"} />
-        <Column sortable field={"phoneNumber"} header={"Phone Number"} />
+        <Column sortable filter filterField='firstName' field={"firstName"} header={"First Name"} />
+        <Column sortable filter filterField='lastName' field={"lastName"} header={"Last Name"} />
+        <Column sortable filter filterField='email' field={"email"} header={"Email Address"} />
+        <Column sortable filter filterElement={verifiedRowFilterTemplate} filterField='phoneNumber' field={"phoneNumber"} header={"Phone Number"} />
+        {/* <Column header="Email" filterField="country.name" style={{ minWidth: '12rem' }} field={"email"} filter filterPlaceholder="Search by Email" /> */}
         <Column sortable body={roleBodyTemplate} header={"Role"} />
         <Column sortable body={actionBodyTemplate} header={"Actions"} />
-        {/* <Column field={"role"} header={"role"} /> */}
       </DataTable>
     </>
   );

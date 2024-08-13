@@ -6,13 +6,16 @@ export const cookiesKey = "Xperiento-cookies";
 
 export const UserContext = React.createContext();
 
-export function decodingToken(token) {
+export function decodingToken(token = "") {
   try {
     const decoded = jwtDecode(token);
+    if (!decoded.user.email) {
+      throw new Error("User Details Invaild")
+    }
     return decoded;
   } catch (error) {
     console.error("JWT decoding error:", error.message);
-    return undefined;
+    return null;
   }
 }
 

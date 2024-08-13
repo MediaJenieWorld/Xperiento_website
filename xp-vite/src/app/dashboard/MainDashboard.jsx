@@ -1,14 +1,31 @@
+import { useContext, useEffect, useState } from "react";
 import "./styles.scss";
+import { UserContext } from "@/store/User_Context";
 
 const MainDashboard = () => {
+    const { auth } = useContext(UserContext);
+    const [user, setuser] = useState(null)
+
+    useEffect(() => {
+        if (auth) {
+            setuser(auth)
+        }
+    }, [auth])
+
+    const isAdmin = user?.role === "admin" ? true : false
+
+    const routesOnlyForAdmin = isAdmin ? [
+        { icon: "Arrow", label: "Your Team", des: "User Management", className: "", backgroundColor: "#355d4f", link: "/dashboard/User_Management" },
+    ] : []
 
     const links = [
         { icon: "Arrow", label: "Zensight", des: "Smart Insights", className: "", backgroundColor: "#474747", link: "/dashboard/Zensight" },
         { icon: "Arrow", label: "Clueberry", des: "Customer Profile", className: "", backgroundColor: "#800080", link: "/dashboard/Clueberry" },
         { icon: "Arrow", label: "Surveys", des: "NPS/CSAT/CES", className: "", backgroundColor: "#42356f", link: "#" },
         { icon: "LongArrow", label: "Reputation management", des: "Dashboard", className: "", backgroundColor: "#a52a2a", link: "/dashboard/Reputation_management" },
-        { icon: "Arrow", label: "Chatbot", des: "Analytics", className: "", backgroundColor: "#d2691e", link: "#" },
-        { icon: "Arrow", label: "Your Team", des: "User Management", className: "", backgroundColor: "#355d4f", link: "/dashboard/User_Management" },
+        { icon: "Arrow", label: "Chatbot", des: "Analytics", className: isAdmin ? "" : "col-2", backgroundColor: "#d2691e", link: "#" },
+        // { icon: "Arrow", label: "Your Team", des: "User Management", className: "", backgroundColor: "#355d4f", link: "/dashboard/User_Management" },
+        ...routesOnlyForAdmin,
         {
             icon: "LongArrow", label: "Business Data Insights", des: "Dashboard",
             className: "col-3", backgroundColor: "#607D8B", link: ""

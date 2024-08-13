@@ -81,10 +81,14 @@ const App = () => {
               <Route path="/dashboard/Clueberry/profile_analytics" element={<Profile_Analytics />} />
               <Route path="/dashboard/Clueberry/profile_analytics/visitor_insight" element={<Visitor_Insight_Page />} />
               {/* User_Management */}
-              <Route path="/dashboard/User_Management" element={<User_Management_DashboardPage />} />
-              <Route path="/dashboard/User_Management/update-staff-profile/:id" element={<Staff_Profile_Update_Page />} />
-              <Route path="/dashboard/User_Management/CreateStaffToken" element={<CreateStaffTokenPage />} />
-              <Route path="/dashboard/Reputation_management" element={<Reputation_management />} />
+              {
+                auth?.role === "admin" ? <>
+                  <Route path="/dashboard/User_Management" element={<User_Management_DashboardPage />} />
+                  <Route path="/dashboard/User_Management/update-staff-profile/:id" element={<Staff_Profile_Update_Page />} />
+                  <Route path="/dashboard/User_Management/CreateStaffToken" element={<CreateStaffTokenPage />} />
+                  <Route path="/dashboard/Reputation_management" element={<Reputation_management />} />
+                </> : null
+              }
             </>
           )}
           <Route path="*" element={<NotFound />} />

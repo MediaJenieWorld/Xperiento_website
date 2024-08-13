@@ -26,9 +26,12 @@ const login_Token_Vaildity = process.env.LOGIN_TOKEN_VAILDITY;
 router.post("/login", async (req, res) => {
   const { id, password } = req.body;
   try {
-    const user = await User.findOne({
-      $or: [{ phoneNumber: id }, { email: id }],
-    });
+    const user = await User.findOne(
+      {
+        $or: [{ phoneNumber: id }, { email: id }],
+      },
+      { email: 1, role: 1, password: 1 }
+    ).lean();
 
     if (!user) {
       return res.status(200).json({
@@ -46,7 +49,7 @@ router.post("/login", async (req, res) => {
     delete user.password;
 
     const token = jwt.sign(
-      { user: { _id: user._id, email: user.email } },
+      { user: { _id: user._id, email: user.email, role: user.role } },
       encodeKey,
       {
         expiresIn: login_Token_Vaildity,
@@ -293,6 +296,7 @@ router.post("/confirmVerifyEmail", async (req, res) => {
           .json({ data: "Business Admin Not Found", success: false });
       }
       user.business_Id = findAdmin.business_Id;
+      user.category_Id = findAdmin.category_Id;
       user.role = "staff";
     } else {
       const branch = new Branch({
@@ -316,7 +320,7 @@ router.post("/confirmVerifyEmail", async (req, res) => {
     delete user.password;
 
     const token = jwt.sign(
-      { user: { _id: user._id, email: user.email } },
+      { user: { _id: user._id, email: user.email, role: user.role } },
       encodeKey,
       {
         expiresIn: login_Token_Vaildity,

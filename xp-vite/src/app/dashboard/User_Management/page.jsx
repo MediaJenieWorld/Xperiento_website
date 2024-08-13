@@ -14,13 +14,6 @@ const User_Management_DashboardPage = () => {
                 </button>
             </div>
             <div className="data-table">
-                <div className="table-actions">
-                    <h4>Staff Profiles</h4>
-                    <div className="actions">
-                        <button>Filter</button>
-                        <button>Sort By</button>
-                    </div>
-                </div>
                 <div className="table">
                     <UserCustomerProfile_DataTable />
                 </div>

@@ -182,3 +182,27 @@
         }
     }
 }
+
+.p-dropdown.p-component.p-inputwrapper {
+    gap: 10px;
+}
+
+.p-dropdown-items-wrapper {
+    ul.p-dropdown-items {
+        padding: 4px;
+        background-color: var(--main-Bg);
+
+        li.p-dropdown-item {
+            padding: 6px 10px;
+
+            span.p-dropdown-item-label {
+                color: var(--star-color);
+            }
+
+            &:hover {
+                background-color: #4b4b4b5c;
+            }
+        }
+
+    }
+}
