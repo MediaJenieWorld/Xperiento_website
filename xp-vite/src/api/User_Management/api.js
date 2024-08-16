@@ -23,3 +23,9 @@ export const generateAddStaffTokenHandler = async (payload) => {
     instance.post(`User_Management/generateAddStaffToken`, payload)
   );
 };
+
+export const getFiltered_CustomersProfile = async (payload) => {
+  return handleRequest(() =>
+    instance.post(`User_Management/getFiltered_CustomersProfile`, payload)
+  );
+};

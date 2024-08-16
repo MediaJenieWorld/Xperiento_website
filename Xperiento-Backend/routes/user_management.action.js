@@ -13,6 +13,8 @@ const user_mail_address = process.env.MAIL_ADDRESS;
 const user_mail_password = process.env.Mail_PASS;
 const login_Token_Vaildity = process.env.LOGIN_TOKEN_VAILDITY;
 
+const allowedFilters = ["email", "firstName", "lastName", "phoneNumber"];
+
 router.get("/getDashboard_Profiles", async (req, res) => {
   try {
     const user_id = req.user;
@@ -289,4 +291,53 @@ router.post("/generateAddStaffToken", async (req, res) => {
   }
 });
 
+router.post("/getFiltered_CustomersProfile", async (req, res) => {
+  try {
+    const user_id = req.user;
+    const user = await User.findOne(
+      { _id: user_id, role: "admin" },
+      {
+        _id: 1,
+        business_Id: 1,
+      }
+    ).lean();
+
+    if (!user) {
+      return res.status(200).json({ data: "User Not Found", success: false });
+    }
+
+    const filters = filterPayload(req.body);
+    console.log("filters", filters);
+
+    const usersProfiles = await User.find(
+      {
+        business_Id: user.business_Id,
+        ...filters,
+      },
+      {
+        _id: 1,
+        firstName: 1,
+        lastName: 1,
+        email: 1,
+        phoneNumber: 1,
+        role: 1,
+        status: 1,
+      }
+    ).lean();
+
+    res.status(200).json({ data: usersProfiles, success: true });
+  } catch (error) {
+    res.status(500).json({ data: error.message, success: false });
+  }
+});
+
+function filterPayload(obj) {
+  let x = {};
+  for (let key in obj) {
+    if (obj[key] !== "" || allowedFilters.includes(key)) {
+      x[key] = { $regex: obj[key], $options: "i" };
+    }
+  }
+  return x;
+}
 module.exports = router;

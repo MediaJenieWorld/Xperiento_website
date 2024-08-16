@@ -102,7 +102,15 @@
                 i {
                     border: none;
                     padding: 8px;
+                    color: #000;
+                    font-weight: 900;
                     background-color: #ff9800;
+                    cursor: pointer;
+                    transition: opacity .2 ease-in-out;
+
+                    &:hover {
+                        opacity: .86
+                    }
                 }
 
                 &:has(input:focus-visible) {
@@ -193,13 +201,23 @@
                         border: none;
                     }
 
-                    button {
+                    i {
                         border: none;
                         padding: 8px;
+                        color: #000;
+                        font-weight: 900;
+                        cursor: pointer;
                         background-color: #ff9800;
+                        transition: opacity .2 ease-in-out;
+
+                        &:hover {
+                            opacity: .86
+                        }
                     }
 
-                    .p-column-filter-clear-button.p-link.p-hidden-space {
+
+                    .p-column-filter-clear-button.p-link.p-hidden-space,
+                    .p-column-filter-menu-button.p-link {
                         display: none;
                     }
 

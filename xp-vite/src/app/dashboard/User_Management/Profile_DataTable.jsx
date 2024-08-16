@@ -1,14 +1,16 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useEffect, useState } from 'react';
-import { getUser_Management_Dashboard_Profiles } from '@/api/User_Management/api';
+import { getUser_Management_Dashboard_Profiles, getFiltered_CustomersProfile } from '@/api/User_Management/api';
 import { toast } from 'react-toastify';
 import Custom_Centered_DynamicDialog from "@/components/ui/Dialog/Center_Dialog"
 import { delete_Staff_Account } from "@/api/Zensight/api";
 import { FilterMatchMode } from 'primereact/api';
+import { useForm } from 'react-hook-form';
 
 
 const UserCustomerProfile_DataTable = () => {
+  const { getValues, register } = useForm()
 
   const [deleteActionloading, setdeleteActionLoading] = useState(false)
   const [data, setData] = useState(null)
@@ -22,7 +24,6 @@ const UserCustomerProfile_DataTable = () => {
     'lastName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'phoneNumber': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   });
-
 
   async function deleteStaffHandler(id) {
     if (!id || deleteActionloading) return
@@ -45,15 +46,19 @@ const UserCustomerProfile_DataTable = () => {
     setdeleteActionLoading(false)
   }
 
-
   const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
+    setTableDataLoading(true)
+    clearTimeout(setTime)
+    var setTime = setTimeout(() => {
+      const value = e.target.value;
+      let _filters = { ...filters };
 
-    _filters['global'].value = value;
+      _filters['global'].value = value;
 
-    setFilters(_filters);
-    setGlobalFilterValue(value);
+      setFilters(_filters);
+      setGlobalFilterValue(value);
+      setTableDataLoading(false)
+    }, 2000);
   };
 
 
@@ -122,6 +127,25 @@ const UserCustomerProfile_DataTable = () => {
     return <div>{data.role.toUpperCase()}</div>;
   };
 
+  const submitFilterHandler = async () => {
+    try {
+      const registerValues = getValues()
+      const payload = filterPayload(registerValues)
+      const res = await getFiltered_CustomersProfile(payload)
+      if (res.data.success) {
+        const getform = res.data.data
+        if (res.data.data.length > 0) {
+          setData(getform)
+          setTableDataLoading(false)
+        }
+        else {
+          toast.info("Data Not Found")
+        }
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
 
   const renderHeader = () => {
     return (
@@ -135,16 +159,18 @@ const UserCustomerProfile_DataTable = () => {
     );
   };
   const header = renderHeader()
-  const verifiedRowFilterTemplate = (options) => {
+
+  const rowFilterTemplate = (opt, formField) => {
     return <>
-      <input value={options.value} style={{ padding: "4px 10px" }} onChange={(e) => options.filterApplyCallback([from, e.value])} />
+      <input {...register(formField)} style={{ padding: "4px 10px" }} />
+      <i onClick={() => submitFilterHandler()} className="pi pi-search"></i>
     </>
   };
 
   return (
     <>
       <DataTable sortMode="multiple" removableSort pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
-        showGridlines value={data} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
+        showGridlines value={data} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]}
         globalFilterFields={["email", "firstName", "lastName", "phoneNumber"]}
         loading={tableDataLoading}
         header={header}
@@ -154,10 +180,10 @@ const UserCustomerProfile_DataTable = () => {
         paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
       >
         <Column sortable field={"_id"} header={"Unique Id"} />
-        <Column sortable filter filterField='firstName' field={"firstName"} header={"First Name"} />
-        <Column sortable filter filterField='lastName' field={"lastName"} header={"Last Name"} />
-        <Column sortable filter filterField='email' field={"email"} header={"Email Address"} />
-        <Column sortable filter filterElement={verifiedRowFilterTemplate} filterField='phoneNumber' field={"phoneNumber"} header={"Phone Number"} />
+        <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "firstName")} field={"firstName"} header={"First Name"} />
+        <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "lastName")} field={"lastName"} header={"Last Name"} />
+        <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "email")} field={"email"} header={"Email Address"} />
+        <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "phoneNumber")} field={"phoneNumber"} header={"Phone Number"} />
         {/* <Column header="Email" filterField="country.name" style={{ minWidth: '12rem' }} field={"email"} filter filterPlaceholder="Search by Email" /> */}
         <Column sortable body={roleBodyTemplate} header={"Role"} />
         <Column sortable body={actionBodyTemplate} header={"Actions"} />
@@ -165,6 +191,16 @@ const UserCustomerProfile_DataTable = () => {
     </>
   );
 };
+
+function filterPayload(obj) {
+  let x = {};
+  for (let key in obj) {
+    if (obj[key] !== "") {
+      x[key] = obj[key];
+    }
+  }
+  return x;
+}
 
 
 export default UserCustomerProfile_DataTable;
