@@ -18,13 +18,6 @@ const ClueberryDashboardPage = () => {
                     </a>
                 </div>
                 <div className="data-table">
-                    <div className="table-actions">
-                        <h4>Latest Profiles</h4>
-                        <div className="actions">
-                            <button>Filter</button>
-                            <button>Sort By</button>
-                        </div>
-                    </div>
                     <div className="table">
                         <Profile_DataTable />
                     </div>

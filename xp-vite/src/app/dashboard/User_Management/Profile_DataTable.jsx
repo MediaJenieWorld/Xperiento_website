@@ -47,18 +47,14 @@ const UserCustomerProfile_DataTable = () => {
   }
 
   const onGlobalFilterChange = (e) => {
-    setTableDataLoading(true)
-    clearTimeout(setTime)
-    var setTime = setTimeout(() => {
-      const value = e.target.value;
-      let _filters = { ...filters };
+    const value = e.target.value;
+    let _filters = { ...filters };
 
-      _filters['global'].value = value;
+    _filters['global'].value = value;
 
-      setFilters(_filters);
-      setGlobalFilterValue(value);
-      setTableDataLoading(false)
-    }, 2000);
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+    setTableDataLoading(false)
   };
 
 
@@ -169,8 +165,11 @@ const UserCustomerProfile_DataTable = () => {
 
   return (
     <>
-      <DataTable sortMode="multiple" removableSort pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
-        showGridlines value={data} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]}
+      <DataTable sortMode="multiple"
+        removableSort
+        pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
+        showGridlines value={data} paginator rows={10}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         globalFilterFields={["email", "firstName", "lastName", "phoneNumber"]}
         loading={tableDataLoading}
         header={header}
