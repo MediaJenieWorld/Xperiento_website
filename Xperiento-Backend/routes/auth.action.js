@@ -189,20 +189,14 @@ router.post("/sendCodeToEmail", async (req, res) => {
         data: "Branch is Already Exists! write branch_Id in Businesss Name",
       });
     }
-    const isIdOrNewName = decodeStaffToken(
-      payload.industrySegment,
-      encodeKey,
-      res
-    );
-
+    const isIdOrNewName = decodeStaffToken(payload.industrySegment, encodeKey);
     if (isIdOrNewName) {
       payload.isBranchExists = true;
-      payload.branchCode = payload.industrySegment;
     } else {
       payload.isBranchExists = false;
-      payload.branchCode = payload.industrySegment;
     }
 
+    payload.branchCode = payload.industrySegment;
     const hashedPassword = await bcrypt.hash(payload.password, saltRounds);
 
     const token = generateRandomCode();
@@ -234,10 +228,12 @@ router.post("/sendCodeToEmail", async (req, res) => {
     // Send email
     let info = await transporter.sendMail(mailOptions);
 
-    res.status(200).json({ data: "Email sent successfully", success: true });
+    return res
+      .status(200)
+      .json({ data: "Email sent successfully", success: true });
   } catch (error) {
     console.error(error?.message);
-    res
+    return res
       .status(500)
       .json({ data: error.message || "Failed to send email", success: false });
   }
@@ -386,15 +382,11 @@ function generateRandomCode() {
   return code;
 }
 
-function decodeStaffToken(token, secretKey, res) {
+function decodeStaffToken(token, secretKey) {
   try {
     const decoded = jwt.verify(token, secretKey);
     return decoded;
   } catch (err) {
-    res.status(200).json({
-      data: err.message,
-      success: false,
-    });
     return null;
   }
 }
