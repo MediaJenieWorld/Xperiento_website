@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form"
 import GenderAndAge_Chart from "../Charts/Gender_and_Age_Chart"
 import "./styles.scss"
@@ -35,6 +36,7 @@ const init = [
 
 const Visitor_Insight_Page = () => {
     const [chartData, setChartData] = useState(init);
+    const [filters, setFilters] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
 
@@ -57,6 +59,11 @@ const Visitor_Insight_Page = () => {
                 if (res.data.data.length === 0) {
                     toast.info("Data Not Found")
                 } else {
+                    if (res.data.filters.length === 0) {
+                        toast.info("Filters Not Found")
+                    } else {
+                        setFilters(res.data.filters)
+                    }
                     setChartData(res.data.data)
                 }
             }
@@ -81,15 +88,21 @@ const Visitor_Insight_Page = () => {
                 Visitor Insights
             </h2>
             <div className="filters">
-                <form onSubmit={handleSubmit(filterSubmit)} className="row">
-                    {filters().map((filter, i) => (<div key={i} className="col">
-                        <select {...register(filter.id)} name={filter.name} id={filter.id}>
-                            {filter.options.map((opt, key) => <option key={key} value={opt.value}>{opt.label}</option>
+                {filters.length > 0 && <form onSubmit={handleSubmit(filterSubmit)} className="row">
+                    {filters.map((filter, i) => (<div key={i} className="col">
+                        <select {...register(filter.register_key)} name={filter.register_key} id={filter.register_key}>
+                            {filter.values.map((opt, key) => <>
+                                {key === 0 &&
+                                    <option key={99} value="">{filter.label}</option>
+                                }
+                                <option key={key} value={opt.value}>{opt.label}</option>
+                            </>
                             )}
+                            <p>123</p>
                         </select>
                     </div>))}
                     <button style={{ margin: "0", padding: "5px 20px", height: "unset", width: "unset" }} className="start">Find</button>
-                </form>
+                </form>}
             </div>
             <GenderAndAge_Chart isError={isError} isLoading={isLoading} chartData={chartData} />
         </div>
@@ -98,84 +111,93 @@ const Visitor_Insight_Page = () => {
 
 export default Visitor_Insight_Page
 
-function filters() {
-    return [{
-        id: "travel_By",
-        name: "travel_By", options: [
-            { value: "", label: "Travel By" },
-            { value: "Car", label: "Car" },
-            { value: "bike", label: "Bike" },
-            { value: "taxi", label: "Taxi" },
-            { value: "train", label: "Train" },
-            { value: "etc", label: "etc" },
-        ]
-    },
-    {
-        id: "vehicle_brand",
-        name: "vehicle_brand", options: [
-            { value: "", label: "Vehicle Brand" },
-            { value: "bmw", label: "BMW" },
-            { value: "ferrari", label: "Ferrari" },
-            { value: "audi", label: "Audi" },
-            { value: "etc", label: "etc" },
-        ]
-    },
-    // {
-    //     id: "color_liked",
-    //     name: "color_liked", options: [
-    //         { value: "", label: "Colour Liked" },
-    //         { value: "red", label: "Red" },
-    //         { value: "green", label: "Green" },
-    //         { value: "blue", label: "Blue" },
-    //         { value: "etc", label: "etc" },
-    //     ]
-    // },
-    // {
-    //     id: "Outfit_Options",
-    //     name: "Outfit_Options",
-    //     options: [
-    //         { value: "", label: "Outfit Options" },
-    //         { value: "casual", label: "Casual Outfit" },
-    //         { value: "formal", label: "Formal Outfit" },
-    //         { value: "sporty", label: "Sporty Outfit" }
-    //     ]
-    // },
-    {
-        id: "visited_with",
-        name: "visited_with",
-        options: [
-            { value: "", label: "Visited With" },
-            { value: "alone", label: "Alone" },
-            { value: "husband/wife", label: "Husband / Wife" },
-            { value: "parents", label: "Parents" },
-            { value: "childrens", label: "Childrens" },
-            { value: "friends", label: "Friends" }
-        ]
-    },
-    {
-        id: "beverage_Preference",
-        name: "beverage_Preference",
-        options: [
-            { value: "", label: "Likes Tea / Coffee" },
-            { value: "tea", label: "Tea" },
-            { value: "coffee", label: "Coffee" },
-            { value: "both", label: "Both" }
-        ]
-    },
-    {
-        id: "language_Spoken",
-        name: "language_Spoken",
-        options: [
-            { value: "", label: "Language Spoken" },
-            { value: "hindi", label: "Hindi" },
-            { value: "tamil", label: "Tamil" },
-            { value: "telugu", label: "Telugu" },
-            { value: "english", label: "English" },
-            { value: "spanish", label: "Spanish" },
-            { value: "french", label: "French" },
-            { value: "etc", label: "Etc." }
-        ]
-    }
-
-    ]
-}
+// function filters() {
+//  return [
+//     {
+//         "label": "Travel By",
+//         "register_key": "travel_By",
+//         "values": [
+//             {
+//                 "label": "Car",
+//                 "value": "Car"
+//             },
+//             {
+//                 "label": "Bike",
+//                 "value": "Bike"
+//             },
+//             {
+//                 "label": "Train",
+//                 "value": "train"
+//             },
+//             {
+//                 "label": "Taxi",
+//                 "value": "Taxi"
+//             },
+//             {
+//                 "label": "etc",
+//                 "value": "etc"
+//             }
+//         ]
+//     },
+//     {
+//         "label": "Vehicle Brand",
+//         "register_key": "vehicle_brand",
+//         "values": [
+//             {
+//                 "label": "BMW",
+//                 "value": "bmw"
+//             },
+//             {
+//                 "label": "Mercedes",
+//                 "value": "mercedes"
+//             },
+//             {
+//                 "label": "Audi",
+//                 "value": "audi"
+//             },
+//             {
+//                 "label": "Jaguar",
+//                 "value": "jaguar"
+//             },
+//             {
+//                 "label": "etc",
+//                 "value": "etc"
+//             }
+//         ]
+//     },
+//     {
+//         "label": "Visiting with",
+//         "register_key": "visited_with",
+//         "values": [
+//             {
+//                 "label": "Alone",
+//                 "value": "alone"
+//             },
+//             {
+//                 "label": "Spouse",
+//                 "value": "spouse"
+//             },
+//             {
+//                 "label": "Family",
+//                 "value": "family"
+//             },
+//             {
+//                 "label": "Husband/wife",
+//                 "value": "husband/wife"
+//             },
+//             {
+//                 "label": "parents",
+//                 "value": "Parents"
+//             },
+//             {
+//                 "label": "Childrens",
+//                 "value": "childrens"
+//             },
+//             {
+//                 "label": "Friends",
+//                 "value": "freinds"
+//             }
+//         ]
+//     }
+// ]
+// }

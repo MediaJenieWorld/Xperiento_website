@@ -307,7 +307,6 @@ router.post("/getFiltered_CustomersProfile", async (req, res) => {
     }
 
     const filters = filterPayload(req.body);
-    console.log("filters", filters);
 
     const usersProfiles = await User.find(
       {

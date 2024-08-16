@@ -26,6 +26,12 @@ export const fetch_getAgeGroup = async () => {
 
 export const fetch_VisitorInsight = async (data) => {
   return handleRequest(() =>
-    instance.post("Analytics/getAll_FiltersByAgeGroup", data)
+    instance.post("Analytics/get_Visitors_Profiles", data)
+  );
+};
+
+export const getFiltered_VisitorsProfile = async (payload) => {
+  return handleRequest(() =>
+    instance.post(`Clueberry/getFiltered_VisitorsProfile`, payload)
   );
 };

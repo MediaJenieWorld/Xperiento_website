@@ -4,7 +4,7 @@ const Profiles = require("../models/Profile");
 const User = require("../models/User_Customer");
 const Profile_Form = require("../models/Profile_Form");
 
-const visitorProfileFilters = ["travel_By", "vehicle_brand", "visited_with"];
+const visitorProfileFilters = ["travel_By", "vehicle_brand", "visited_with","like tea/coffee","language_spoken","visited_with"];
 
 router.get("/getVehicleBrands", async (req, res) => {
   try {
@@ -146,7 +146,7 @@ router.get("/getAgeGroup", async (req, res) => {
   }
 });
 
-router.get("/getVisitorsProfileFilters", async (req, res) => {
+router.get("/get_Visitors_Profiles_Filters", async (req, res) => {
   try {
     const user_id = req.user;
     const user = await User.findById(user_id, {
@@ -157,16 +157,29 @@ router.get("/getVisitorsProfileFilters", async (req, res) => {
       return res.status(200).json({ data: "User Not Found", success: false });
     }
     const filter_response = await Profile_Form.findOne({ form_type: "Basic" });
-    const getAllFilters = filter_response.forms.sections[0].fields.filter(
+    const getReqFilters = filter_response.forms.sections[0].fields.filter(
       (val) => visitorProfileFilters.includes(val.register_key)
     );
+    const getAllFilters = getReqFilters.map((obj, index) => {
+      let reqObj = {};
+      reqObj.label = obj.label;
+      reqObj.register_key = obj.register_key;
+      const reqFields = obj.values.map((val, i) => {
+        const field = {};
+        field.label = val.label;
+        field.value = val.value;
+        return field;
+      });
+      reqObj.values = reqFields;
+      return reqObj;
+    });
     res.status(200).json({ data: getAllFilters, success: true });
   } catch (error) {
     res.status(500).json({ data: error.message, success: false });
   }
 });
 
-router.post("/getAll_FiltersByAgeGroup", async (req, res) => {
+router.post("/get_Visitors_Profiles", async (req, res) => {
   try {
     const user_id = req.user;
     const user = await User.findById(user_id, {
@@ -174,12 +187,14 @@ router.post("/getAll_FiltersByAgeGroup", async (req, res) => {
       category_Id: 1,
       business_Id: 1,
       role: "admin",
-    });
+    }).lean();
     if (!user) {
       return res.status(200).json({ data: "User Not Found", success: false });
     }
 
+    // GET Filters from Body
     const data = req.body;
+
     const filters = filterNonEmptyProperties(data);
     const categories = await Profiles.aggregate([
       {
@@ -220,7 +235,26 @@ router.post("/getAll_FiltersByAgeGroup", async (req, res) => {
       },
     ]);
 
-    res.status(200).json({ data: categories, success: true });
+    const filter_response = await Profile_Form.findOne({ form_type: "Basic" });
+    const getReqFilters = filter_response.forms.sections[0].fields.filter(
+      (val) => visitorProfileFilters.includes(val.register_key)
+    );
+    const getAllFilters = getReqFilters.map((obj, index) => {
+      let reqObj = {};
+      reqObj.label = obj.label;
+      reqObj.register_key = obj.register_key;
+      const reqFields = obj.values.map((val, i) => {
+        const field = {};
+        field.label = val.label;
+        field.value = val.value;
+        return field;
+      });
+      reqObj.values = reqFields;
+      return reqObj;
+    });
+    res
+      .status(200)
+      .json({ data: categories, filters: getAllFilters, success: true });
   } catch (error) {
     res.status(500).json({ data: error.message, success: false });
   }

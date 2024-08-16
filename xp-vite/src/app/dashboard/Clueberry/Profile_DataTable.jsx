@@ -1,7 +1,7 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useEffect, useState } from 'react';
-import { getProfilesData } from '@/api/Clueberry/api';
+import { getProfilesData, getFiltered_VisitorsProfile } from '@/api/Clueberry/api';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { FilterMatchMode } from 'primereact/api';
@@ -80,30 +80,34 @@ const Profile_DataTable = () => {
   };
   const header = renderHeader()
 
-  // const submitFilterHandler = async () => {
-  //   try {
-  //     const registerValues = getValues()
-  //     const payload = filterPayload(registerValues)
-  //     const res = await getFiltered_CustomersProfile(payload)
-  //     if (res.data.success) {
-  //       const getform = res.data.data
-  //       if (res.data.data.length > 0) {
-  //         setData(getform)
-  //         setTableDataLoading(false)
-  //       }
-  //       else {
-  //         toast.info("Data Not Found")
-  //       }
-  //     }
-  //   } catch (error) {
-  //     toast.error(error.message)
-  //   }
-  // }
+  const submitFilterHandler = async () => {
+    try {
+      const registerValues = getValues()
+      const payload = filterPayload(registerValues)
+      const res = await getFiltered_VisitorsProfile(payload)
+      if (res.data.success) {
+        const getform = res.data.data
+        if (getform.length > 0) {
+          setData(pre => {
+            const x = { ...pre }
+            return { ...x, profiles: getform }
+          }
+          )
+          setTableDataLoading(false)
+        }
+        else {
+          toast.info("Data Not Found")
+        }
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
 
   const rowFilterTemplate = (opt, formField) => {
     return <>
       <input {...register(formField)} style={{ padding: "4px 10px" }} />
-      <i className="pi pi-search"></i>
+      <i onClick={() => submitFilterHandler()} className="pi pi-search"></i>
     </>
   };
 
@@ -133,5 +137,14 @@ const Profile_DataTable = () => {
   );
 };
 
+function filterPayload(obj) {
+  let x = {};
+  for (let key in obj) {
+    if (obj[key] !== "") {
+      x[key] = obj[key];
+    }
+  }
+  return x;
+}
 
 export default Profile_DataTable;
