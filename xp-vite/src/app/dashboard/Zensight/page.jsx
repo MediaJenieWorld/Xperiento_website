@@ -160,7 +160,7 @@ const ZensightDashboardPage = () => {
             >
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}
-                to="/dashboard/my_insights"
+                to="/dashboard/Zensight/my_insights"
               >
                 Load More
               </Link>
