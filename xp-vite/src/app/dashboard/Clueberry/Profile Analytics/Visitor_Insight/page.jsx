@@ -1,9 +1,8 @@
-
 import { useForm } from "react-hook-form"
 import GenderAndAge_Chart from "../Charts/Gender_and_Age_Chart"
 import "./styles.scss"
 import BackButton from "@/components/ui/BackButton"
-import { fetch_VisitorInsight } from "@/api/Clueberry/api";
+import { fetch_VisitorInsight, get_Acitve_Filtered_Visitors_Profiles } from "@/api/Clueberry/api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 const init = [
@@ -51,7 +50,7 @@ const Visitor_Insight_Page = () => {
         }
     })
 
-    const filterSubmit = async (data) => {
+    const get_VisitorProfiles_GraphData = async (data) => {
         setIsLoading(true)
         try {
             const res = await fetch_VisitorInsight(data)
@@ -75,8 +74,27 @@ const Visitor_Insight_Page = () => {
     }
 
     useEffect(() => {
-        filterSubmit()
+        get_VisitorProfiles_GraphData()
     }, [])
+
+
+    const fetch_VisitorProfiles_Filtered_GraphData = async (data) => {
+        setIsLoading(true)
+        try {
+            const res = await get_Acitve_Filtered_Visitors_Profiles(data)
+            if (res.data.success) {
+                if (res.data.data.length === 0) {
+                    toast.info("Data Not Found")
+                } else {
+                    setChartData(res.data.data)
+                }
+            }
+        } catch (error) {
+            toast.error(error.message)
+            setIsError(true)
+        }
+        setIsLoading(false)
+    }
 
     return (
         <div className="Visitor_Insight_Page">
@@ -88,7 +106,7 @@ const Visitor_Insight_Page = () => {
                 Visitor Insights
             </h2>
             <div className="filters">
-                {filters.length > 0 && <form onSubmit={handleSubmit(filterSubmit)} className="row">
+                {filters.length > 0 && <form onSubmit={handleSubmit(fetch_VisitorProfiles_Filtered_GraphData)} className="row">
                     {filters.map((filter, i) => (<div key={i} className="col">
                         <select {...register(filter.register_key)} name={filter.register_key} id={filter.register_key}>
                             {filter.values.map((opt, key) => <>
@@ -98,7 +116,6 @@ const Visitor_Insight_Page = () => {
                                 <option key={key} value={opt.value}>{opt.label}</option>
                             </>
                             )}
-                            <p>123</p>
                         </select>
                     </div>))}
                     <button style={{ margin: "0", padding: "5px 20px", height: "unset", width: "unset" }} className="start">Find</button>

@@ -94,14 +94,17 @@
                     border: none;
                 }
 
-                i {
+                .loadBtn {
                     border: none;
                     padding: 8px;
                     color: #000;
-                    font-weight: 900;
                     background-color: #ff9800;
                     cursor: pointer;
                     transition: opacity .2 ease-in-out;
+
+                    i {
+                        font-weight: 900;
+                    }
 
                     &:hover {
                         opacity: .86
@@ -115,8 +118,7 @@
         }
 
         .table {
-            overflow-x: scroll;
-
+            overflow-x: auto;
 
             .tag {
                 padding: 5px 10px;
@@ -196,20 +198,22 @@
                         border: none;
                     }
 
-                    i {
+                    .loadBtn {
                         border: none;
                         padding: 8px;
                         color: #000;
-                        font-weight: 900;
-                        cursor: pointer;
                         background-color: #ff9800;
+                        cursor: pointer;
                         transition: opacity .2 ease-in-out;
+
+                        i {
+                            font-weight: 900;
+                        }
 
                         &:hover {
                             opacity: .86
                         }
                     }
-
 
                     .p-column-filter-clear-button.p-link.p-hidden-space,
                     .p-column-filter-menu-button.p-link {

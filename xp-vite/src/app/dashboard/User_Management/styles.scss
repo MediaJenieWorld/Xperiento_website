@@ -99,14 +99,17 @@
                     border: none;
                 }
 
-                i {
+                .loadBtn {
                     border: none;
                     padding: 8px;
                     color: #000;
-                    font-weight: 900;
                     background-color: #ff9800;
                     cursor: pointer;
                     transition: opacity .2 ease-in-out;
+
+                    i {
+                        font-weight: 900;
+                    }
 
                     &:hover {
                         opacity: .86
@@ -120,7 +123,7 @@
         }
 
         .table {
-            overflow-x: scroll;
+            overflow-x: auto;
 
 
             .tag {
@@ -201,14 +204,17 @@
                         border: none;
                     }
 
-                    i {
+                    .loadBtn {
                         border: none;
                         padding: 8px;
                         color: #000;
-                        font-weight: 900;
-                        cursor: pointer;
                         background-color: #ff9800;
+                        cursor: pointer;
                         transition: opacity .2 ease-in-out;
+
+                        i {
+                            font-weight: 900;
+                        }
 
                         &:hover {
                             opacity: .86

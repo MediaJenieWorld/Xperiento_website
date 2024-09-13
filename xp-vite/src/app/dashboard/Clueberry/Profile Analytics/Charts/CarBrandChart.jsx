@@ -95,7 +95,7 @@ const CarBrand_Chart = () => {
         datasets: [
             {
                 label: 'Vehicle Brands Used',
-                data: labels.map((val) => output[val] ? output[val] : .1),
+                data: labels.map((val) => output[val] ? output[val] : 0),
                 backgroundColor: backgroundColor,
                 borderWidth: 1,
             }

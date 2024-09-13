@@ -102,18 +102,18 @@ router.post("/create_profile", async (req, res) => {
   }
 });
 
-router.post("/getFiltered_VisitorsProfile", async (req, res) => {
+router.post("/getFiltered_CustomerProfile", async (req, res) => {
   try {
     const user_id = req.user;
     const filters = filterPayload(req.body);
     const user = await User.findById(user_id, {
       _id: 1,
       profiles: 1,
-      category_Id: 1,
+      // category_Id: 1,
     })
       .populate([
         { path: "profiles", match: { ...filters } },
-        { path: "category_Id" },
+        // { path: "category_Id" },
       ])
       .lean();
 

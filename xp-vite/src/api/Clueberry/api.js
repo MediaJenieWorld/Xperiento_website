@@ -8,6 +8,12 @@ export const getProfilesData = async () => {
   return handleRequest(() => instance.get("Clueberry/get_profiles"));
 };
 
+export const getFiltered_CustomerProfile = async (payload) => {
+  return handleRequest(() =>
+    instance.post(`Clueberry/getFiltered_CustomerProfile`, payload)
+  );
+};
+
 export const createProfileHandler = async (data) => {
   return handleRequest(() => instance.post(`Clueberry/create_profile`, data));
 };
@@ -30,8 +36,8 @@ export const fetch_VisitorInsight = async (data) => {
   );
 };
 
-export const getFiltered_VisitorsProfile = async (payload) => {
+export const get_Acitve_Filtered_Visitors_Profiles = async (data) => {
   return handleRequest(() =>
-    instance.post(`Clueberry/getFiltered_VisitorsProfile`, payload)
+    instance.post("Analytics/get_Acitve_Filtered_Visitors_Profiles", data)
   );
 };

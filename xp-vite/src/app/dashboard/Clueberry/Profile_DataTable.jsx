@@ -1,7 +1,7 @@
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useEffect, useState } from 'react';
-import { getProfilesData, getFiltered_VisitorsProfile } from '@/api/Clueberry/api';
+import { getProfilesData, getFiltered_CustomerProfile } from '@/api/Clueberry/api';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { FilterMatchMode } from 'primereact/api';
@@ -16,8 +16,9 @@ const Profile_DataTable = () => {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     'full_name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'age_group': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // 'lastName': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // 'phoneNumber': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'gender': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'travel_By': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'age_group': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   });
 
   async function getData() {
@@ -59,7 +60,7 @@ const Profile_DataTable = () => {
     const rowData = { id: profile._id }; // Add an ID for the row
     data.customer_create_profile_form.sections.forEach(section => {
       section.fields.forEach(field => {
-        rowData[field.label] = profile.data[field.register_key] || "N/A";
+        rowData[field.register_key] = profile.data[field.register_key] || "N/A";
       });
     });
     return rowData;
@@ -73,7 +74,9 @@ const Profile_DataTable = () => {
         <h4>Business Profiles</h4>
         <div className="search-box">
           <input value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-          <i className='pi pi-search'></i>
+          <button className='loadBtn'>
+            <i className='pi pi-search'></i>
+          </button>
         </div>
       </>
     );
@@ -82,18 +85,19 @@ const Profile_DataTable = () => {
 
   const submitFilterHandler = async () => {
     try {
+      setTableDataLoading(true)
       const registerValues = getValues()
       const payload = filterPayload(registerValues)
-      const res = await getFiltered_VisitorsProfile(payload)
+      const res = await getFiltered_CustomerProfile(payload)
       if (res.data.success) {
         const getform = res.data.data
         if (getform.length > 0) {
+          toast.success("Data Fetched")
           setData(pre => {
             const x = { ...pre }
             return { ...x, profiles: getform }
           }
           )
-          setTableDataLoading(false)
         }
         else {
           toast.info("Data Not Found")
@@ -102,12 +106,15 @@ const Profile_DataTable = () => {
     } catch (error) {
       toast.error(error.message)
     }
+    setTableDataLoading(false)
   }
 
   const rowFilterTemplate = (opt, formField) => {
     return <>
       <input {...register(formField)} style={{ padding: "4px 10px" }} />
-      <i onClick={() => submitFilterHandler()} className="pi pi-search"></i>
+      <button className='loadBtn' onClick={() => submitFilterHandler()}>
+        <i className={tableDataLoading ? "pi pi-spin pi-spinner" : "pi pi-search"}></i>
+      </button>
     </>
   };
 
@@ -129,7 +136,7 @@ const Profile_DataTable = () => {
           section.fields.map(field => (
             <Column
               sortable filter filterElement={(options) => rowFilterTemplate(options, field.register_key)}
-              key={field.register_key} field={field.label} header={field.label} />
+              key={field.register_key} field={field.register_key} header={field.label} />
           ))
         )}
       </DataTable>

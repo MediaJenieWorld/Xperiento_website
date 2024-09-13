@@ -160,7 +160,16 @@ router.post("/sendCodeToEmail", async (req, res) => {
     const payload = req.body;
     const existingUser = await User.findOne({
       $or: [{ phoneNumber }, { email }],
-    });
+    }).lean();
+
+    const existingVerifyQueUser = await Verify_User.findOne({
+      $or: [{ phoneNumber }, { email }],
+    }).lean();
+
+    if (existingVerifyQueUser) {
+      await Verify_User.deleteOne({ _id: existingVerifyQueUser._id });
+    }
+
     const isBranchAlreadyRegi = await Branch.findOne({
       name: payload.industrySegment,
     });

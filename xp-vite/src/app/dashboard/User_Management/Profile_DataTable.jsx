@@ -125,14 +125,15 @@ const UserCustomerProfile_DataTable = () => {
 
   const submitFilterHandler = async () => {
     try {
+      setTableDataLoading(true)
       const registerValues = getValues()
       const payload = filterPayload(registerValues)
       const res = await getFiltered_CustomersProfile(payload)
       if (res.data.success) {
         const getform = res.data.data
         if (res.data.data.length > 0) {
+          toast.success("Data Fetched")
           setData(getform)
-          setTableDataLoading(false)
         }
         else {
           toast.info("Data Not Found")
@@ -141,6 +142,7 @@ const UserCustomerProfile_DataTable = () => {
     } catch (error) {
       toast.error(error.message)
     }
+    setTableDataLoading(false)
   }
 
   const renderHeader = () => {
@@ -149,7 +151,9 @@ const UserCustomerProfile_DataTable = () => {
         <h4>Business Profiles</h4>
         <div className="search-box">
           <input value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-          <i className='pi pi-search'></i>
+          <button className='loadBtn'>
+            <i className={tableDataLoading ? "pi pi-spin pi-spinner" : "pi pi-search"}></i>
+          </button>
         </div>
       </>
     );
@@ -159,7 +163,9 @@ const UserCustomerProfile_DataTable = () => {
   const rowFilterTemplate = (opt, formField) => {
     return <>
       <input {...register(formField)} style={{ padding: "4px 10px" }} />
-      <i onClick={() => submitFilterHandler()} className="pi pi-search"></i>
+      <button className='loadBtn' onClick={() => submitFilterHandler()}>
+        <i className={tableDataLoading ? "pi pi-spin pi-spinner" : "pi pi-search"}></i>
+      </button>
     </>
   };
 
