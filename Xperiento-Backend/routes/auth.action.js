@@ -288,7 +288,7 @@ router.post("/confirmVerifyEmail", async (req, res) => {
 
       const findAdmin = await User.findOne(
         { email: tokenDecode.user.admin_email, role: "admin" },
-        { business_Id: 1 }
+        { business_Id: 1,category_Id:1 }
       ).lean();
       if (tokenDecode.user.staffEmail !== verifyCode.email) {
         return res

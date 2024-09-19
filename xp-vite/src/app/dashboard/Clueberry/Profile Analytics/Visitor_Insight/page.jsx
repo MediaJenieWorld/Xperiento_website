@@ -3,31 +3,36 @@ import GenderAndAge_Chart from "../Charts/Gender_and_Age_Chart"
 import "./styles.scss"
 import BackButton from "@/components/ui/BackButton"
 import { fetch_VisitorInsight, get_Acitve_Filtered_Visitors_Profiles } from "@/api/Clueberry/api";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import { Button } from "primereact/button";
+import "primereact/resources/themes/lara-light-amber/theme.css";
+import { Dropdown } from 'primereact/dropdown';
+
+
 const init = [
     {
         age_groups: [
-            { age_group: "15-20", count: 1 },
-            { age_group: "20-25", count: 1 },
+            { age_group: "15-20", count: 0 },
+            { age_group: "20-25", count: 0 },
         ],
-        total_count: 2,
+        total_count: 0,
         gender: "male",
     },
     {
         age_groups: [
-            { age_group: "15-20", count: 1 },
-            { age_group: null, count: 1 },
+            { age_group: "15-20", count: 0 },
+            { age_group: null, count: 0 },
         ],
-        total_count: 2,
+        total_count: 0,
         gender: "other",
     },
     {
         age_groups: [
-            { age_group: "20-25", count: 4 },
-            { age_group: null, count: 1 },
+            { age_group: "20-25", count: 0 },
+            { age_group: null, count: 0 },
         ],
-        total_count: 5,
+        total_count: 0,
         gender: "female",
     },
 ];
@@ -39,7 +44,7 @@ const Visitor_Insight_Page = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
 
-    const { register, handleSubmit } = useForm({
+    const { register, handleSubmit, setValue } = useForm({
         defaultValues: {
             "travel_by": "",
             "vehicle_brand": "",
@@ -73,6 +78,16 @@ const Visitor_Insight_Page = () => {
         setIsLoading(false)
     }
 
+    const Graph = useMemo(() => {
+        return (
+            <GenderAndAge_Chart
+                isError={isError}
+                isLoading={isLoading}
+                chartData={chartData}
+            />
+        );
+    }, [chartData, isLoading, isError]);
+
     useEffect(() => {
         get_VisitorProfiles_GraphData()
     }, [])
@@ -81,6 +96,9 @@ const Visitor_Insight_Page = () => {
     const fetch_VisitorProfiles_Filtered_GraphData = async (data) => {
         setIsLoading(true)
         try {
+            if (data?.travel_By && data?.travel_By === "") {
+                data.vehicle_brand = ""
+            }
             const res = await get_Acitve_Filtered_Visitors_Profiles(data)
             if (res.data.success) {
                 if (res.data.data.length === 0) {
@@ -107,24 +125,48 @@ const Visitor_Insight_Page = () => {
             </h2>
             <div className="filters">
                 {filters.length > 0 && <form onSubmit={handleSubmit(fetch_VisitorProfiles_Filtered_GraphData)} className="row">
-                    {filters.map((filter, i) => (<div key={i} className="col">
-                        <select {...register(filter.register_key)} name={filter.register_key} id={filter.register_key}>
-                            {filter.values.map((opt, key) => <>
-                                {key === 0 &&
-                                    <option key={99} value="">{filter.label}</option>
-                                }
-                                <option key={key} value={opt.value}>{opt.label}</option>
-                            </>
-                            )}
-                        </select>
-                    </div>))}
-                    <button style={{ margin: "0", padding: "5px 20px", height: "unset", width: "unset" }} className="start">Find</button>
+                    {filters.map((filter, i) => (
+                        <Fragment key={i}>
+                            <FilterComponent filter={filter} setValue={setValue} register={register} />
+                        </Fragment>)
+                    )}
+                    <Button size="small" icon="pi pi-search" label="Find"
+                        style={{ fontWeight: "600" }} severity="secondary" className="pr" />
                 </form>}
             </div>
-            <GenderAndAge_Chart isError={isError} isLoading={isLoading} chartData={chartData} />
+            {Graph}
         </div>
     )
 }
+const FilterComponent = ({ filter, register, setValue }) => {
+    const [selectedValue, setSelectedValue] = useState("");
+    const selectedFilter = filter.values.find(val => val.value === selectedValue);
+    const hasChildren = selectedFilter ? selectedFilter.children : null;
+
+    useEffect(() => {
+        setValue(filter.register_key, selectedValue)
+    }, [selectedValue])
+    return (
+        <>
+            <div className="col">
+                <div className="p-inputgroup flex-1">
+                    <Dropdown
+                        value={selectedValue}
+                        onChange={(e) => setSelectedValue(e.target.value)}
+                        options={filter.values} optionLabel="label"
+                        optionValue="value"
+                        pt={{ list: { className: "pr" } }}
+                        placeholder={filter.label} className="pr" />
+                    <Button onClick={() => setSelectedValue("")} type="reset" size="small" icon="pi pi-filter-slash"
+                        style={{ fontWeight: "600" }} severity="warning" className="pr" />
+                </div>
+            </div>
+            {selectedValue && hasChildren && (
+                <FilterComponent filter={hasChildren} setValue={setValue} register={register} />
+            )}
+        </>
+    );
+};
 
 export default Visitor_Insight_Page
 

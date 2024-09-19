@@ -8,6 +8,8 @@ import Custom_Centered_DynamicDialog from "@/components/ui/Dialog/Center_Dialog"
 import { subscriptionPacks } from '@/utils/SubPacks';
 import "./styles.scss"
 import { toast } from 'react-toastify';
+import BackButton from "@/components/ui/BackButton"
+
 
 function Subscription() {
 
@@ -88,6 +90,7 @@ function Subscription() {
 
     return (
         <div className="SubsPage">
+            <BackButton href="/dashboard" />
             {loading && <div className="loadingLayer">
                 <h3>
                     Loading and Verifying Payment. Please wait and do not close or refresh this page.

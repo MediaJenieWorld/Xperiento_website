@@ -6,6 +6,8 @@ import { toast } from "react-toastify"
 import { createProfileHandler, getFormsData } from "@/api/Clueberry/api"
 import FormDataComponent from "@/components/ui/FormData"
 import BackButton from "@/components/ui/BackButton"
+import "primereact/resources/themes/lara-light-amber/theme.css";
+
 
 const Create_Profile_Page = () => {
 

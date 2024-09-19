@@ -1,5 +1,7 @@
 .MyInsights {
-    background-color: var(--primary-color);
+    color: var(--main-Bg);
+    background-color: var(--xp-primary-color);
+    min-height: calc(100vh - var(--header-h));
 
     .header {
         padding: 2rem 0px;

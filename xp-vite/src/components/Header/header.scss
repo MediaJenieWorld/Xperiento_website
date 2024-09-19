@@ -8,7 +8,7 @@ header.header {
     height: var(--header-h);
     padding: 0px 2rem;
     background-color: var(--main-Bg);
-    z-index:99;
+    z-index: 99;
     border-bottom: 1px solid rgba(67, 67, 67, 0.515);
 
     .logo {
@@ -22,7 +22,7 @@ header.header {
             line-height: 45.46px;
             letter-spacing: 1px;
             font-size: 32px;
-            color: var(--primary-color);
+            color: #fff;
 
             &::first-letter {
                 font-size: 36px;

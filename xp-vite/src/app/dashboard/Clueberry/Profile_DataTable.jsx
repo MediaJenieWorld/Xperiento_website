@@ -51,7 +51,7 @@ const Profile_DataTable = () => {
   }, [])
 
   if (!data) {
-    return <p style={{ color: "var(--primary-color)", textAlign: "center" }}> <i className='pi pi-spin pi-spinner'></i> </p>
+    return <p style={{ color: "var(--xp-primary-color)", textAlign: "center" }}> <i className='pi pi-spin pi-spinner'></i> </p>
   }
 
 
@@ -118,6 +118,7 @@ const Profile_DataTable = () => {
     </>
   };
 
+
   return (
     <>
       <DataTable header={header}
@@ -128,9 +129,7 @@ const Profile_DataTable = () => {
         loading={tableDataLoading}
         filterDisplay="row"
         emptyMessage="Visitor's Profiles not found"
-        pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
         showGridlines value={preparedData} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
       >
         {data.customer_create_profile_form.sections.map(section =>
           section.fields.map(field => (

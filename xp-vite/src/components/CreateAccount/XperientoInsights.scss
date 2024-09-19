@@ -18,7 +18,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--primary-color);
+  color: var(--xp-primary-color);
   position: relative;
   z-index: 3;
   opacity: 0;
@@ -59,7 +59,7 @@
 
 
   .head {
-    color: var(--primary-color);
+    color: var(--xp-primary-color);
     text-align: center;
 
     .highlight {
@@ -72,7 +72,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 2rem;
-    color: var(--primary-color);
+    color: var(--xp-primary-color);
     padding-top: 2rem;
   }
 

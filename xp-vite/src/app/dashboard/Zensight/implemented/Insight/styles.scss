@@ -2,7 +2,7 @@
     width: 100%;
     padding: 2rem 0rem 0rem 0rem;
     background-color: var(--main-Bg);
-    color: var(--primary-color);
+    color: var(--xp-primary-color);
     min-height: 100vh;
 
     .formAndComments {
@@ -88,7 +88,7 @@
             }
 
             button[type="submit"]:hover {
-                background-color: var(--primary-color);
+                background-color: var(--xp-primary-color);
             }
         }
     }

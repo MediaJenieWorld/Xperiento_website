@@ -1,3 +1,5 @@
+const { frontEndLink } = require("./token");
+
 const generateEmailVerification = (token) => {
   return `
   <!DOCTYPE html>
@@ -202,7 +204,7 @@ const sendAddStaffTokenEmail = ({ token, senderEmail }) => {
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
+        background-color: #ffff;
       }
       .logo {
         text-align: center;
@@ -241,28 +243,42 @@ const sendAddStaffTokenEmail = ({ token, senderEmail }) => {
         border-radius: 6px;
         margin: 1rem 0;
         font-weight: 700;
-        text-align: center;
-        background-color: #ffd74a;
+        background-color: #ffc800;
       }
-      a, p {
+      p,.black-color {
+        color: #000;
+      }
+      a,
+      .star {
         text-align: left;
         color: #ffd74a;
       }
       h4 {
         text-align: center;
       }
+        .underline{
+        font-size: 1.25rem;
+        text-decoration: underline;
+        }
     </style>
   </head>
   <body>
     <div class="container">
       <h1 class="logo"><span> X</span>periento</h1>
       <h3>Business Token for Staff</h3>
+      <p class="star">
+        Paste the token into the 'Business Name' field while creating your
+        account
+      </p>
       <div class="reset-link">
-        <p>${token}</p>
+        <p class="black-color">
+          ${token}
+        </p>
       </div>
       <div class="email">
-        <p>Sent by: <strong>${senderEmail}</strong></p>
+        <p class="star">Sent by: <strong>${senderEmail}</strong></p> 
       </div>
+       <a class="underline" href="${frontEndLink}">Click to Create Account on Xperiento</a>
     </div>
   </body>
 </html>

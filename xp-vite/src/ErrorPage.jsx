@@ -22,7 +22,7 @@ export default function ErrorPage({ message }) {
         justifyContent: "center",
         height: "calc(100vh - var(--header-h))",
         backgroundColor: "var(--main-Bg)",
-        color: "var(--primary-color)",
+        color: "var(--xp-primary-color)",
       }}
     >
       <h2>Error Occured </h2>

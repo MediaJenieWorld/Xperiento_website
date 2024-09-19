@@ -1,5 +1,7 @@
 .Create_Profile_Page {
     padding-top: 1rem;
+    background-color: #fff;
+    color: #000;
 
     .back {
         margin: 1rem;
@@ -116,7 +118,8 @@
                                 justify-content: center;
                                 align-items: center;
 
-                                input[type="radio"] {
+                                input[type="radio"],
+                                input[type="checkbox"] {
                                     display: none;
 
                                     &:checked+label {
@@ -125,8 +128,9 @@
                                         }
 
                                         span.label {
-                                            color: var(--primary-color);
-                                            background-color: #FF0000;
+                                            // color: var(--xp-primary-color);
+                                            color: #000;
+                                            background-color: var(--star-color);
                                         }
                                     }
                                 }
@@ -134,14 +138,14 @@
                             }
 
                             span.label {
-                                border: 2px solid #FF0000;
+                                border: 2px solid var(--star-color);
                                 padding: 4px 10px;
                                 border-radius: 25px;
-                                color: #FF0000;
+                                color: #000;
 
                                 &.active {
-                                    color: var(--primary-color);
-                                    background-color: #FF0000;
+                                    color: #000;
+                                    background-color: var(--star-color);
                                 }
                             }
 
@@ -213,7 +217,7 @@
 
             button {
                 border-radius: 40px;
-                color: var(--primary-color);
+                color: var(--xp-primary-color);
                 padding: 10px 30px;
                 background-color: var(--main-Bg);
                 font-weight: 800;

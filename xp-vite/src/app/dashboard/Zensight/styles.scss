@@ -1,6 +1,7 @@
 .Dashboard {
-    background-color: var(--primary-color);
+    color: var(--main-Bg);
     padding-bottom: 2rem;
+    background-color: var(--xp-primary-color);
 
     .header {
         padding: 2rem 0px;
@@ -34,7 +35,7 @@
         gap: var(--font-xlg);
         border-bottom: 2px solid #7F92B3;
         border-top: 2px solid #7F92B3;
-        color: var(--primary-color);
+        color: var(--xp-primary-color);
 
         .card {
             // min-height: 210px;

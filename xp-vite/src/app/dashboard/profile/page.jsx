@@ -9,20 +9,20 @@ const UserProfilePage = () => {
   const [isLoading, setLoading] = useState(true);
 
   async function get_UserDataHandler() {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await viewProfile_Api()
+      const res = await viewProfile_Api();
       if (res.data.success || res.status == 200) {
-        setUser(res.data.data)
+        setUser(res.data.data);
       }
     } catch (error) {
       console.log(error.error);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   useEffect(() => {
-    get_UserDataHandler()
+    get_UserDataHandler();
   }, []);
 
   if (isLoading) {
@@ -54,39 +54,54 @@ const UserProfilePage = () => {
     organization = "",
     organization_SubCategory = "",
     industrySegment = "",
-    active_subscription = { startTime: "", endTime: "", plan: "", price: "" }
+    category_Id = {
+      category: "category",
+      subCategory: "subCategory",
+    },
+    business_Id = {
+      location: "location",
+    },
+
+    active_subscription = { startTime: "", endTime: "", plan: "", price: "" },
   } = user || {};
-  const startTime = formatDate(active_subscription.startTime)
-  const endTime = formatDate(active_subscription.endTime)
+  const startTime = formatDate(active_subscription.startTime);
+  const endTime = formatDate(active_subscription.endTime);
   return (
     <div className="User-Profile-Page">
-      <Link to="update" className="button start">Update Profile</Link>  <h3>
-        <span>{`${firstName} ${lastName}`}</span>,<br /> Welcome to the Profile information!
+      <Link to="update" className="button start">
+        Edit Profile
+      </Link>
+      <h3>
+        Welcome, <span>{`${firstName} ${lastName}`}</span>
       </h3>
       <div className="user-details">
-        <h2 style={{ textAlign: "center", padding: "1rem" }}>Active Subscription Plan</h2>
-        {
-          active_subscription ?
-            <>
-              <div className="row">
-                <label>Subscription Plan:</label>
-                <span>{active_subscription.plan}</span>
-              </div>
-              <div className="row">
-                <label>Subscription Price:</label>
-                <span>Rs. {active_subscription.price}</span>
-              </div>
-              <div className="row">
-                <label>Subscription Start At:</label>
-                <span>{startTime}</span>
-              </div>
-              <div className="row">
-                <label>Subscription End On:</label>
-                <span style={{ color: '#e74c3c' }}>{endTime}</span>
-              </div>
-            </>
-            : <p style={{ textAlign: "center", margin: "1rem 0" }}>You dont have any Subscription Plan</p>
-        }
+        <h2 style={{ textAlign: "center", padding: "1rem" }}>
+          Active Subscription Plan
+        </h2>
+        {active_subscription ? (
+          <>
+            <div className="row">
+              <label>Subscription Plan:</label>
+              <span>{active_subscription.plan}</span>
+            </div>
+            <div className="row">
+              <label>Subscription Price:</label>
+              <span>Rs. {active_subscription.price}</span>
+            </div>
+            <div className="row">
+              <label>Subscription Start At:</label>
+              <span>{startTime}</span>
+            </div>
+            <div className="row">
+              <label>Subscription End On:</label>
+              <span style={{ color: "#e74c3c" }}>{endTime}</span>
+            </div>
+          </>
+        ) : (
+          <p style={{ textAlign: "center", margin: "1rem 0" }}>
+            You dont have any Subscription Plan
+          </p>
+        )}
         <hr />
         <div className="row">
           <label>First Name:</label>
@@ -126,18 +141,17 @@ const UserProfilePage = () => {
         </div>
         <div className="row">
           <label>Organization:</label>
-          <span>{organization}</span>
+          <span>{category_Id.category}</span>
         </div>
         <div className="row">
           <label>Organization SubCategory:</label>
-          <span>{organization_SubCategory}</span>
+          <span>{category_Id.subCategory}</span>
         </div>
         <div className="row">
-          <label>industrySegment:</label>
-          <span>{industrySegment}</span>
+          <label>location:</label>
+          <span>{business_Id.location}</span>
         </div>
         <hr />
-
       </div>
     </div>
   );

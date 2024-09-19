@@ -23,7 +23,7 @@ const MainDashboard = () => {
         { icon: "Arrow", label: "Clueberry", des: "Customer Profile", className: "", backgroundColor: "#800080", link: "/dashboard/Clueberry" },
         { icon: "Arrow", label: "Surveys", des: "NPS/CSAT/CES", className: "", backgroundColor: "#42356f", link: "#" },
         { icon: "LongArrow", label: "Reputation management", des: "Dashboard", className: "", backgroundColor: "#a52a2a", link: "/dashboard/Reputation_management" },
-        { icon: "Arrow", label: "Chatbot", des: "Analytics", className: isAdmin ? "" : "col-2", backgroundColor: "#d2691e", link: "#" },
+        { icon: "Arrow", label: "Chatbot", des: "Analytics", className: isAdmin ? "" : "col-2", backgroundColor: "#d2691e", link: "/dashboard/Chatbot" },
         // { icon: "Arrow", label: "Your Team", des: "User Management", className: "", backgroundColor: "#355d4f", link: "/dashboard/User_Management" },
         ...routesOnlyForAdmin,
         {

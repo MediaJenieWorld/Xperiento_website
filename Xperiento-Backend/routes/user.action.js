@@ -28,13 +28,22 @@ router.get("/profile", async (req, res) => {
       pinCode: 1,
       organization: 1,
       organization_SubCategory: 1,
-      industrySegment: 1,
+      category_Id: 1,
+      business_Id: 1,
       active_subscription: 1,
     })
-      .populate({
-        path: "active_subscription",
-        select: "endTime plan price startTime",
-      })
+      .populate([
+        {
+          path: "active_subscription",
+          select: "endTime plan price startTime",
+        },
+        {
+          path: "category_Id",
+        },
+        {
+          path: "business_Id",
+        },
+      ])
       .lean();
 
     if (!user) {

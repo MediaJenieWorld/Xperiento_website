@@ -2,7 +2,7 @@ const Profile_Form = require("../models/Profile_Form");
 
 const get_form = async ({ isOnlyBasicForm, user }) => {
   const { category_Id } = user;
-  const form = await Profile_Form.find({ status: "Active" });
+  const form = await Profile_Form.find({ status: "Active" }).lean();
   const basicCustomerProfileForm = form.find(
     (val, i) => val.form_type === "Basic"
   );

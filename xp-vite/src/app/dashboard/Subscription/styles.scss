@@ -1,7 +1,7 @@
 .SubsPage {
     padding: var(--main-p-x);
     background-color: var(--main-Bg);
-    color: var(--primary-color);
+    color: var(--xp-primary-color);
     display: flex;
     flex-direction: column;
     gap: var(--main-p-x);
@@ -16,7 +16,7 @@
         width: 100%;
         background-color: rgba(0, 0, 0, 0.282);
         backdrop-filter: blur(4px);
-        color: var(--primary-color);
+        color: var(--xp-primary-color);
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
@@ -79,7 +79,7 @@
                         cursor: pointer;
                         transition: all .3s ease-in-out;
                         background-color: var(--main-Bg);
-                        color: var(--primary-color);
+                        color: var(--xp-primary-color);
                         border: 2px solid var(--star-color);
 
                         &:hover {

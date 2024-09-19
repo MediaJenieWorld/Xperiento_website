@@ -1,11 +1,15 @@
 import "./styles.scss";
 import Profile_DataTable from "./Profile_DataTable";
+import BackButton from "@/components/ui/BackButton";
 
 const ClueberryDashboardPage = () => {
 
     return (
         <>
             <div className="ClueberryDashboardPage">
+                <div style={{ margin: "1rem 0" }} className="div">
+                    <BackButton style={{ margin: " 0" }} href="/dashboard" />
+                </div>
                 <h2>Clueberry</h2>
                 <div className="links">
                     <a href="/dashboard/Clueberry/create_profile" className="box">

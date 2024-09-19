@@ -3,6 +3,7 @@
 
 import { Country, State, City } from 'country-state-city';
 import { useEffect, useState } from 'react';
+import { Dropdown } from 'primereact/dropdown';
 
 const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpdateData }) => {
 
@@ -42,16 +43,29 @@ const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpd
     <>
       <div data-state={isCreatingAccount} className="flex-column">
         <label>Country:</label>
-        <select {...register('country', {
+        <Dropdown   {...register('country', {
           required: "Country is required",
-        })} defaultValue={country} onChange={handleCountryChange}>
-          <option value="">Select Country</option>
-          {Country.getAllCountries().map((country) => (
-            <option key={country.isoCode} value={country.isoCode}>
-              {country.name}
-            </option>
-          ))}
-        </select>
+        })}
+          filterBy='name' filter
+          defaultValue={country} value={country} onChange={handleCountryChange} options={Country.getAllCountries()}
+          optionLabel="name"
+          optionValue='isoCode'
+          pt={{
+            filterContainer: { className: "pr" },
+            header: { className: "pr" },
+            list: { className: "pr" },
+            root: {
+              style: {
+                backgroundColor: "transparent",
+                borderRadius: "0px",
+                borderLeftColor: "transparent",
+                borderTopColor: "transparent",
+                borderRightColor: "transparent",
+                outline: "none",
+                boxShadow: "none"
+              }
+            }
+          }} placeholder="Select Country " className="country-list pr w-full" highlightOnSelect={true} />
         {errors?.country && (
           <span
             style={{ fontSize: ".7rem", fontWeight: "700", color: "red" }}
@@ -66,7 +80,7 @@ const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpd
         <label>State:</label>
         <select {...register('state', {
           required: "State is required",
-        })} defaultValue={state} onChange={handleStateChange}>
+        })} defaultValue={state} value={state} onChange={handleStateChange}>
           <option value="">Select State</option>
           {State.getStatesOfCountry(country).map((state) => (
             <option key={state.isoCode} value={state.isoCode}>

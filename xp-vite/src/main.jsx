@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App.jsx";
 import "primeicons/primeicons.css";
 import "react-toastify/dist/ReactToastify.css";
+import "primereact/resources/themes/lara-dark-amber/theme.css";
 
 import { UserProvider } from "./store/User_Context.jsx";
 import { ToastContainer } from "react-toastify";

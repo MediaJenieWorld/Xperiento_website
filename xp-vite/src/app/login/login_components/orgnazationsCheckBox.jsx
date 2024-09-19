@@ -60,7 +60,7 @@ const Orgnazations = ({ category_Id, register, errors, businessType, isCreatingA
                     Organisation is Required
                 </span>
             )}
-            <div data-state={isCreatingAccount} className="flex-column subCategory">
+            <div id="subCategory" data-state={isCreatingAccount} className="flex-column subCategory">
                 <label>Organisation Sub Category:</label>
                 <div className="items">
                     {!businessType &&

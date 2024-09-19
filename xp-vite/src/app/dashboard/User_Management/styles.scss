@@ -4,7 +4,7 @@
     min-height: calc(100vh - 60px);
     background-color: var(--main-Bg);
     overflow-x: hidden;
-    color: var(--primary-color);
+    color: var(--xp-primary-color);
 
     .header {
         display: flex;
@@ -54,7 +54,7 @@
             float: right;
 
             button {
-                color: var(--primary-color);
+                color: var(--xp-primary-color);
                 background-color: #F44336;
             }
         }
@@ -68,7 +68,8 @@
         gap: 2rem;
 
         .p-datatable-header {
-            color: var(--primary-color);
+            background-color: var(--main-Bg);
+            color: var(--xp-primary-color);
             display: flex;
             padding: var(--main-p-x);
             border-radius: 6px 6px 0px 0px;
@@ -92,7 +93,7 @@
                 input {
                     padding: 8px;
                     background-color: transparent;
-                    color: var(--primary-color);
+                    color: var(--xp-primary-color);
                     outline: none;
                     font-size: 1rem;
                     font-weight: 600;
@@ -117,7 +118,7 @@
                 }
 
                 &:has(input:focus-visible) {
-                    border-color: var(--primary-color);
+                    border-color: var(--xp-primary-color);
                 }
             }
         }
@@ -172,6 +173,12 @@
                         justify-content: space-between;
                     }
 
+                    tr,
+                    th {
+                        background-color: var(--main-Bg);
+                        color: var(--star-color);
+                    }
+
                     th {
                         padding: 12px;
                         text-align: left;
@@ -197,7 +204,7 @@
                     input {
                         padding: 8px;
                         background-color: transparent;
-                        color: var(--primary-color);
+                        color: var(--xp-primary-color);
                         outline: none;
                         font-size: 1rem;
                         font-weight: 600;
@@ -232,7 +239,7 @@
                     }
 
                     &:has(input:focus-visible) {
-                        border-color: var(--primary-color);
+                        border-color: var(--xp-primary-color);
                     }
                 }
 
@@ -248,7 +255,7 @@
                             font-weight: 300;
                             font-size: .9rem;
                             padding: 10px;
-                            color: var(--primary-color);
+                            color: var(--xp-primary-color);
                             background-color: var(--main-Bg);
                             border-bottom: 1px solid var(--border-light-color); // Bottom border for rows
                             border-right: 1px solid var(--border-light-color); // Right border for column separation
@@ -273,51 +280,51 @@
             padding: var(--main-p-x);
 
             .p-dropdown.p-component.p-inputwrapper.p-inputwrapper-filled {
-                color: var(--primary-color);
+                display: flex;
+                align-items: center;
                 padding: 5px;
-                background-color: #353535;
+                background-color: transparent;
+
+                .p-dropdown-label {
+                    color: #fff;
+                }
             }
 
-
-
-            button,
-            i {
-                font-size: 1.5rem;
-                color: var(--primary-color);
+            .p-paginator-pages {
+                display: flex;
+                gap: 1rem;
             }
 
             button:hover {
                 background-color: #353535;
+                color: #fff;
             }
         }
     }
 }
 
-.p-dropdown.p-component.p-inputwrapper {
-    gap: 10px;
-}
 
-.p-dropdown-items-wrapper,
-.p-column-filter-overlay {
+.p-dropdown-panel {
+    * {
+        margin: revert-layer;
+        padding: revert-layer;
+    }
 
-    ul.p-dropdown-items,
-    .p-column-filter-row-items {
-        padding: 4px;
-        background-color: var(--main-Bg);
+    .p-dropdown-items {
+        background-color: #000;
 
-        li.p-dropdown-item,
-        .p-column-filter-row-item {
-            padding: 6px 10px;
-            color: var(--star-color);
-
-            span.p-dropdown-item-label {
-                color: var(--star-color);
-            }
-
-            &:hover {
-                background-color: #4b4b4b5c;
-            }
+        li {
+            background-color: transparent;
         }
 
+        li.p-highlight {
+            color: #fff;
+            background-color: #3d3d3d52;
+        }
+
+        li.p-foucs,
+        li:hover {
+            background-color: #3d3d3d52;
+        }
     }
 }

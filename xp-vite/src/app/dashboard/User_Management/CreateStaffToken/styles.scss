@@ -5,7 +5,7 @@
 
     .header {
         margin-top: 2rem;
-        color: var(--primary-color);
+        color: var(--xp-primary-color);
     }
 
     .form {
@@ -14,54 +14,29 @@
         flex-direction: column;
         gap: 2rem;
 
-        .flex {
-            display: flex;
-            column-gap: 1rem;
-            row-gap: 1rem;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-
-            h3 {
-                color: var(--primary-color);
-            }
-
-            textarea {
-                flex-basis: 100%;
-                height: fit-content;
-                resize: vertical;
-                display: block;
-                background-color: transparent;
-                padding: 6px 0px;
-                border: none;
-                outline: none;
-                color: #fff;
-                font-size: 18px;
-                border-bottom: 1px solid #fff;
-
-            }
-
-            input {
-                width: 100%;
-                background-color: transparent;
-                padding: 6px 0px;
-                border: none;
-                outline: none;
-                color: #fff;
-                font-size: 18px;
-                border-bottom: 1px solid #fff;
-                transition: border-color 0.3s ease-in-out;
-
-                &:focus-within {
-                    border-color: var(--star-color);
-                }
-            }
-
-            button {
-                white-space: nowrap;
-                margin: 0;
-                padding: 6px 14px;
-            }
+        .p-stepper-panels {
+            min-height: 200px;
         }
+
+        .footer {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+
+    .p-stepper-panels,
+    .p-stepper {
+        height: max-content;
+    }
+
+    button {
+        font-weight: 600;
+    }
+
+    .w-full {
+        width: 100%;
     }
 }

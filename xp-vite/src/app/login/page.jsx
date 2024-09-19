@@ -32,8 +32,8 @@ const HomePage = () => {
       </button>
       {!isStarted && !user ? (
         <h3>
-          Smart insights to improve your sales, marketing, customer retention &
-          customer satisfaction.
+        {/* Smart insights to improve your sales, marketing, customer retention & customer satisfaction. */}
+        One platform to improve your sales, marketing, customer relation and Satisfaction
         </h3>
       ) : (
         <>

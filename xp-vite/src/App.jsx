@@ -32,6 +32,7 @@ const ForgotPassword = lazy(() => import("./app/verify/ForgotPassword"));
 const NewPassword = lazy(() => import("./app/verify/newPasswordForm"));
 
 const UpdateProfilePage = lazy(() => import("./app/dashboard/profile/update/UpdateProfilePage"));
+const Chatbot = lazy(() => import("./app/dashboard/Chatbot/Chatbot"));
 
 const App = () => {
   const { auth } = useContext(UserContext);
@@ -89,6 +90,8 @@ const App = () => {
                   <Route path="/dashboard/Reputation_management" element={<Reputation_management />} />
                 </> : null
               }
+              {/* Chatbot */}
+              <Route path="/dashboard/Chatbot" element={<Chatbot />} />
             </>
           )}
           <Route path="*" element={<NotFound />} />

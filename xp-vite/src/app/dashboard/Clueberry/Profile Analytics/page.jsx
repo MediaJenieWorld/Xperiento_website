@@ -4,6 +4,7 @@ import CarsAndColors_Chart from "./Charts/CarAndColor_Chart"
 import Line_Chart from "./Charts/LineChart"
 import "./styles.scss"
 import BackButton from "@/components/ui/BackButton"
+import "primereact/resources/themes/lara-light-amber/theme.css";
 
 
 const Profile_Analytics = () => {

@@ -5,6 +5,7 @@ const subscriptionPacks = [
     days: 7,
     availableFields: "insightDescription",
     notAvailableFields: "-imgUrl -actionItemExample",
+    availableRoutes: "Zensight Clueberry Analytics",
   },
   {
     name: "BRONZE",
@@ -12,6 +13,7 @@ const subscriptionPacks = [
     days: 30,
     availableFields: "insightDescription -imgUrl actionItemExample",
     notAvailableFields: "-imgUrl -actionItemExample",
+    availableRoutes: "Clueberry Analytics",
   },
   {
     name: "SILVER",
@@ -19,6 +21,7 @@ const subscriptionPacks = [
     days: 30,
     availableFields: "insightDescription imgUrl actionItemExample",
     notAvailableFields: "-imgUrl",
+    availableRoutes: "Zensight Clueberry Analytics",
   },
   {
     name: "GOLD",
@@ -26,6 +29,7 @@ const subscriptionPacks = [
     days: 30,
     availableFields: "insightDescription imgUrl actionItemExample",
     notAvailableFields: "",
+    availableRoutes: "All",
   },
 ];
 module.exports = {

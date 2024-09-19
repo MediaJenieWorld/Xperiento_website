@@ -15,7 +15,7 @@ export default function NotFound() {
         justifyContent: "center",
         height: "calc(100vh - var(--header-h))",
         backgroundColor: "var(--main-Bg)",
-        color: "var(--primary-color)",
+        color: "var(--xp-primary-color)",
       }}
     >
       <h2>Page Not Found</h2>

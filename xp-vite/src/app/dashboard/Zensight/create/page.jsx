@@ -8,9 +8,6 @@ const InsightForm = () => {
   const { auth } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
-    industrySegment: "",
-    insightCategory: "",
-    insightSubCategory: "",
     insightLevel: "",
     insightTitle: "",
     insightDescription: "",

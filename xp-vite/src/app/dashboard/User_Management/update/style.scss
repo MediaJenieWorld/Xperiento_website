@@ -12,7 +12,7 @@
     position: relative;
     text-align: center;
     background-color: var(--main-Bg);
-    color: var(--primary-color);
+    color: var(--xp-primary-color);
     padding-bottom: 2rem;
 
     &::before {
@@ -92,7 +92,7 @@
                 background-color: var(--main-Bg);
 
                 option {
-                    color: var(--primary-color);
+                    color: var(--xp-primary-color);
                 }
             }
 

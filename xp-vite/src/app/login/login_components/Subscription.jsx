@@ -6,26 +6,26 @@ const SubscriptionPacksDetails = () => {
     {
       name: "FREE TRIAL",
       price: "Free for 7 Days",
-      description: "Access to basic insights",
-      insightLimit: "10 insights per day",
+      description: "Access to Zensight Clueberry Analytics",
+      customerProfile: "Zensight Clueberry Analytics",
     },
     {
       name: "BRONZE",
       price: "Rs. 250/Month",
-      description: "Access to insights with basic features",
-      insightLimit: "10 insights per day",
+      description: "Access to Clueberry Analytics",
+      customerProfile: "only you can access Clueberry Customer Profile",
     },
     {
       name: "SILVER",
       price: "Rs. 600/Month",
-      description: "Access to insights with advanced features",
-      insightLimit: "20 insights per day",
+      description: "Access to Access to Zensight Clueberry Analytics",
+      customerProfile: "only you can access Zensight Clueberry Customer Profile",
     },
     {
       name: "GOLD",
       price: "Rs. 750/Month",
-      description: "Access to premium insights with images",
-      insightLimit: "30 insights per day",
+      description: "Access to premium dashboard",
+      customerProfile: "you can access All ",
     },
   ];
 
@@ -56,11 +56,11 @@ const SubscriptionPacksDetails = () => {
                       <p style={{ color: "var(--star-color)" }}>{subs.name}</p>
                     </div>
                     <div className="flex-column">
-                      <h4>What you can view:</h4>
+                      <h4>Services you can access:</h4>
                       <p style={{ color: "var(--star-color)" }}>{subs.description}</p>
                     </div>
                     <div className="flex-column">
-                      <h4>Insight Limit:</h4>
+                      <h4>Customer Profile</h4>
                       <p style={{ color: "var(--star-color)" }}>{subs.insightLimit}</p>
                     </div>
                     <div className="flex-column">

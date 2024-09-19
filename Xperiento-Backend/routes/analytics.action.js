@@ -331,10 +331,16 @@ function generateFiltersAndFields(arr) {
     let reqObj = {};
     reqObj.label = obj.label;
     reqObj.register_key = obj.register_key;
+    if (obj?.childrens) {
+      reqObj.childrens = obj.childrens;
+    }
     const reqFields = obj.values.map((val, i) => {
       const field = {};
       field.label = val.label;
       field.value = val.value;
+      if (val?.children) {
+        field.children = val.children;
+      }
       return field;
     });
     reqObj.values = reqFields;

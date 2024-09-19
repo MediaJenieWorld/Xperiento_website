@@ -117,8 +117,8 @@ const AccountForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>
           {isCreatingAccount == false
-            ? "New Insights almost every day!"
-            : "Complete Your Profile for the right insights."}
+            ? "One Platform for all your business needs"
+            : "Complete your profile for end to end assistance"}
         </h3>
         {isCreatingAccount && (
           <div className="signUp">

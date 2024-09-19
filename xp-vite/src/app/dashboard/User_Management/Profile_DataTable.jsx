@@ -80,7 +80,7 @@ const UserCustomerProfile_DataTable = () => {
   }, [])
 
   if (!data) {
-    return <p style={{ color: "var(--primary-color)", textAlign: "center" }}> <i className='pi pi-spin pi-spinner'></i> </p>
+    return <p style={{ color: "var(--xp-primary-color)", textAlign: "center" }}> <i className='pi pi-spin pi-spinner'></i> </p>
   }
 
   const actionBodyTemplate = (data) => {

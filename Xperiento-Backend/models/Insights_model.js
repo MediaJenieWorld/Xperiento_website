@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const insightSchema = new mongoose.Schema(
   {
-    industrySegment: {
-      type: String,
-      default: "",
-      required: true,
-    },
+    // industrySegment: {
+    //   type: String,
+    //   default: "",
+    //   required: true,
+    // },
     insightCategory: {
       type: String,
       enum: ["Marketing", "Behaviour", "Price", "Complaint", "Sales"],

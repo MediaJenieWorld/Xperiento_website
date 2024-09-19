@@ -1,0 +1,79 @@
+.Chatbot {
+    padding: 1rem 2rem;
+    background-color: var(--main-Bg);
+    color: #fff;
+
+    .back {
+        margin: 1rem;
+    }
+
+    .header {
+        padding: 2rem 0px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        h3 {
+            font-size: var(--font-lg);
+            font-weight: 800;
+        }
+
+        .box {
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+        }
+    }
+
+
+    .data-table {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+
+        .p-datatable-header {
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+                color: #fff;
+                font-size: var(--font-lg);
+            }
+
+        }
+
+        .p-paginator-bottom.p-paginator.p-component {
+            overflow: hidden;
+            width: 100%;
+            background-color: var(--main-Bg);
+            display: flex;
+            gap: 1rem;
+            padding: var(--main-p-x);
+
+            .p-dropdown.p-component.p-inputwrapper.p-inputwrapper-filled {
+                display: flex;
+                align-items: center;
+                padding: 5px;
+                background-color: transparent;
+
+                .p-dropdown-label {
+                    color: #fff;
+                }
+            }
+
+            .p-paginator-pages {
+                display: flex;
+                gap: 1rem;
+            }
+
+            button:hover {
+                background-color: #353535;
+                color: #fff;
+            }
+        }
+    }
+}

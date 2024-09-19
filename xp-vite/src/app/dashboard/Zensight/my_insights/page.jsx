@@ -5,6 +5,8 @@ import { getInsights } from "@/api/Zensight/api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ErrorPage from "@/ErrorPage";
+import { Dropdown } from 'primereact/dropdown';
+import "primereact/resources/themes/lara-light-amber/theme.css";
 
 const MyInsightsPage = () => {
   const [insightsData, setInsightsArray] = useState(null);
@@ -29,7 +31,7 @@ const MyInsightsPage = () => {
     const res = response.data;
     if (response.status === 200) {
       if (res.data.length == 0) {
-        toast.error("No more insights to show");
+        toast.error(insightsData === null ? "insights not available!" : "No more insights to show");
       }
       if (insightsData !== null && !isfilterChange) {
         setInsightsArray({
@@ -111,21 +113,15 @@ const MyInsightsPage = () => {
           </i>
         </h3>
         <div className="filter_div">
-          <select name="race_filter" id="race_filter" value={activeFilters.race} onChange={(e) => filterChangeHandler("race", e.target.value)}>
-            {
-              raceFilter.map((opt) => {
-                return <option key={opt.value} value={opt.value}>{opt.label}</option>
-              })
-            }
-          </select>
+          <Dropdown
+            value={activeFilters.race} onChange={(e) => filterChangeHandler("race", e.target.value)} options={raceFilter} optionLabel="label"
+            optionValue={"value"}
+            showClear placeholder="Select a Race" className="pr" />
 
-          <select name="age_filter" id="age_filter" value={activeFilters.age} onChange={(e) => filterChangeHandler("age", e.target.value)}>
-            {
-              ageFilter.map((opt) => {
-                return <option key={opt.value} value={opt.value}>{opt.label}</option>
-              })
-            }
-          </select>
+          <Dropdown
+            value={activeFilters.age} onChange={(e) => filterChangeHandler("age", e.target.value)} options={ageFilter} optionLabel="label"
+            optionValue={"value"}
+            showClear placeholder="Select a Age Group" className="pr" />
         </div>
       </div>
       <div className="latestInsights">
@@ -174,7 +170,7 @@ export default MyInsightsPage;
 function generateQuery(activeFilters) {
   const query = Object.keys(activeFilters)
     .map(key => {
-      if (activeFilters[key] !== "") {
+      if (activeFilters[key] !== "" && activeFilters[key] !== undefined) {
         return `${key}=${activeFilters[key]}`;
       }
       return '';

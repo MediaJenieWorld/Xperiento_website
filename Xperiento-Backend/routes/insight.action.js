@@ -3,7 +3,6 @@ const router = express.Router();
 const Insight = require("../models/Insights_model");
 const User = require("../models/User_Customer");
 const check_Active_Subscription = require("../utils/check_Sub_middleware");
-const { subscriptionPacks } = require("../utils/sub_packs");
 
 // Route to add a new insight
 router.post("/new_insight", async (req, res) => {
@@ -127,15 +126,9 @@ router.get("/counts", check_Active_Subscription, async (req, res) => {
       categoryCounts[category] = count;
     }
     const activeSub = req.active_subscription;
-    const getActive_Sub = subscriptionPacks.find(
-      (sub, i) => sub?.name === activeSub?.plan
-    );
 
     const insights = await Insight.find({ category_Id: user.category_Id })
-      .select(
-        getActive_Sub.notAvailableFields +
-          " -age  -comments  -implements -updatedAt"
-      )
+      .select(" -age  -comments  -implements -updatedAt")
       .sort({ createdAt: -1 })
       .limit(5)
       .lean();

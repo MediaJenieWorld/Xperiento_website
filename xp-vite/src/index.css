@@ -17,7 +17,7 @@
   --main-Bg: #000000;
   --hoverColor: rgb(255 255 255 / 9%);
   --star-color: #ffd74a;
-  --primary-color: #fff;
+  --xp-primary-color: #fff;
   --gradient: linear-gradient(to top, var(--star-color), var(--main-Bg) 65%);
   --black-bg-hover: #ffffff24;
   --header-h: 60px;
@@ -41,7 +41,16 @@ body {
     }
   }
 }
-
+.pr,
+.pr * {
+  margin: revert-layer;
+  padding: revert-layer;
+}
+.pr-0,
+.pr-0 * {
+  margin: 0;
+  padding: 0;
+}
 .gradient {
   background: var(--gradient);
 }
@@ -138,24 +147,70 @@ button {
     opacity: 0.7;
   }
 }
+.w-full {
+  width: 100%;
+}
+.p-column-filter-overlay,
+.p-dropdown-panel {
+  margin: revert-layer;
+  padding: revert-layer;
+  * {
+    margin: revert-layer;
+    padding: revert-layer;
+  }
+}
 
-::-webkit-scrollbar {
+/* Data Table */
+.p-datatable {
+  .p-inputtext {
+    background-color: transparent;
+  }
+  .p-datatable-header {
+    background-color: #000;
+  }
+}
+.p-datatable-wrapper {
+  .p-datatable-thead {
+    .p-filter-column.p-sortable-column,
+    .p-filter-column {
+      background-color: #000;
+      &.p-highlight {
+        background-color: #111827;
+      }
+    }
+    .p-column-title {
+      color: #ffd74a;
+    }
+    .p-column-header-content {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .p-datatable-tbody {
+    tr {
+      background-color: #000;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.p-datatable-wrapper::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
 
-::-webkit-scrollbar-thumb {
+.p-datatable-wrapper::-webkit-scrollbar-thumb {
   background: var(--star-color);
   filter: brightness(0.7);
   border-radius: 4px;
   transition: filter 0.2s ease-in-out;
 }
 
-::-webkit-scrollbar-track {
+.p-datatable-wrapper::-webkit-scrollbar-track {
   background-color: rgb(219, 219, 219);
   border: 1px solid var(--main-Bg);
 }
 
-::-webkit-scrollbar-thumb:hover {
+.p-datatable-wrapper::-webkit-scrollbar-thumb:hover {
   filter: brightness(1);
 }
