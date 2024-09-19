@@ -5,6 +5,8 @@ import { getProfilesData, getFiltered_CustomerProfile } from '@/api/Clueberry/ap
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { FilterMatchMode } from 'primereact/api';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 const Profile_DataTable = () => {
   const { getValues, register } = useForm()
@@ -71,12 +73,12 @@ const Profile_DataTable = () => {
   const renderHeader = () => {
     return (
       <>
-        <h4>Business Profiles</h4>
-        <div className="search-box">
-          <input value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-          <button className='loadBtn'>
-            <i className='pi pi-search'></i>
-          </button>
+        <h4>Latest Profiles</h4>
+        <div style={{ display: "flex", gap: "1rem" }} className="right-section">
+          <div className="p-inputgroup flex-1">
+            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
+            <Button loading={tableDataLoading} icon="pi pi-search" className='pr ' />
+          </div>
         </div>
       </>
     );
@@ -111,10 +113,10 @@ const Profile_DataTable = () => {
 
   const rowFilterTemplate = (opt, formField) => {
     return <>
-      <input {...register(formField)} style={{ padding: "4px 10px" }} />
-      <button className='loadBtn' onClick={() => submitFilterHandler()}>
-        <i className={tableDataLoading ? "pi pi-spin pi-spinner" : "pi pi-search"}></i>
-      </button>
+      <div className="p-inputgroup flex-1">
+        <InputText style={{ minWidth: "200px" }} {...register(formField)} placeholder="Keyword Search" />
+        <Button loading={tableDataLoading} onClick={() => submitFilterHandler()} icon="pi pi-search" className='pr ' />
+      </div>
     </>
   };
 
@@ -124,6 +126,10 @@ const Profile_DataTable = () => {
       <DataTable header={header}
         sortMode="multiple"
         removableSort
+        pt={{
+          root: { className: "pr" },
+          headerRow: { className: "pr" },
+        }}
         globalFilterFields={["full_name", "age_group"]}
         filters={filters}
         loading={tableDataLoading}

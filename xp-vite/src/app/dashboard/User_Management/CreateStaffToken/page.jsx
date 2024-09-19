@@ -67,9 +67,7 @@ const CreateStaffTokenPage = () => {
                                 <InputText type="email" keyfilter="email"
                                     onChange={(e) => setValue(e.target.value)}
                                     value={value} placeholder='Enter Staff Email...' />
-                                <Button onClick={tokenHandler} className='p-inputgroup-addon p-0'>
-                                    {loading ? <i className='pi pi-spin pi-spinner'></i> : "Send invite"}
-                                </Button>
+                                <Button onClick={tokenHandler} loading={loading} className='p-inputgroup-addon p-0' label='Send Invitation' />
                             </div>
                         </div>
                     </StepperPanel>

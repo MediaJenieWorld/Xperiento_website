@@ -8,21 +8,22 @@ const UserProfilePage = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
-  async function get_UserDataHandler() {
-    setLoading(true);
-    try {
-      const res = await viewProfile_Api();
-      if (res.data.success || res.status == 200) {
-        setUser(res.data.data);
-      }
-    } catch (error) {
-      console.log(error.error);
-    }
-    setLoading(false);
-  }
-
   useEffect(() => {
-    get_UserDataHandler();
+    const fetchUserData = async () => {
+      setLoading(true);
+      try {
+        const res = await viewProfile_Api();
+        if (res.data.success || res.status === 200) {
+          setUser(res.data.data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   if (isLoading) {
@@ -51,106 +52,50 @@ const UserProfilePage = () => {
     state = "",
     city = "",
     pinCode = "",
-    organization = "",
-    organization_SubCategory = "",
-    industrySegment = "",
-    category_Id = {
-      category: "category",
-      subCategory: "subCategory",
-    },
-    business_Id = {
-      location: "location",
-    },
+    business_Id = "location",
+    category_Id: { category = "category", subCategory = "subCategory" } = {},
+    active_subscription: { startTime = "", endTime = "", plan = "", price = "" } = {},
+  } = user;
 
-    active_subscription = { startTime: "", endTime: "", plan: "", price: "" },
-  } = user || {};
-  const startTime = formatDate(active_subscription.startTime);
-  const endTime = formatDate(active_subscription.endTime);
+  const startTime_ui = formatDate(startTime);
+  const endTime_ui = formatDate(endTime);
+
+  const renderDetailRow = (label, value = label) => (
+    <div className="row">
+      <label>{label}:</label>
+      <span>{value}</span>
+    </div>
+  );
+
   return (
     <div className="User-Profile-Page">
-      <Link to="update" className="button start">
-        Edit Profile
-      </Link>
-      <h3>
-        Welcome, <span>{`${firstName} ${lastName}`}</span>
-      </h3>
+      <Link to="update" className="button start">Edit Profile</Link>
+      <h3>Welcome, <span>{`${firstName} ${lastName}`}</span></h3>
       <div className="user-details">
-        <h2 style={{ textAlign: "center", padding: "1rem" }}>
-          Active Subscription Plan
-        </h2>
-        {active_subscription ? (
+        <h2 style={{ textAlign: "center", padding: "1rem" }}>Active Subscription Plan</h2>
+        {plan ? (
           <>
-            <div className="row">
-              <label>Subscription Plan:</label>
-              <span>{active_subscription.plan}</span>
-            </div>
-            <div className="row">
-              <label>Subscription Price:</label>
-              <span>Rs. {active_subscription.price}</span>
-            </div>
-            <div className="row">
-              <label>Subscription Start At:</label>
-              <span>{startTime}</span>
-            </div>
-            <div className="row">
-              <label>Subscription End On:</label>
-              <span style={{ color: "#e74c3c" }}>{endTime}</span>
-            </div>
+            {renderDetailRow("Subscription Plan", plan)}
+            {renderDetailRow("Subscription Price", `Rs. ${price}`)}
+            {renderDetailRow("Subscription Start At", startTime_ui)}
+            {renderDetailRow("Subscription End On", <span style={{ color: "#e74c3c" }}>{endTime_ui}</span>)}
           </>
         ) : (
-          <p style={{ textAlign: "center", margin: "1rem 0" }}>
-            You dont have any Subscription Plan
-          </p>
+          <p style={{ textAlign: "center", margin: "1rem 0" }}>You don't have any Subscription Plan</p>
         )}
         <hr />
-        <div className="row">
-          <label>First Name:</label>
-          <span>{firstName}</span>
-        </div>
-        <div className="row">
-          <label>Last Name:</label>
-          <span>{lastName}</span>
-        </div>
-        <div className="row">
-          <label>Email:</label>
-          <span>{email}</span>
-        </div>
-        <div className="row">
-          <label>Phone Number:</label>
-          <span>{phoneNumber}</span>
-        </div>
-        <div className="row">
-          <label>Status:</label>
-          <span>{status}</span>
-        </div>
-        <div className="row">
-          <label>Country:</label>
-          <span>{country}</span>
-        </div>
-        <div className="row">
-          <label>State:</label>
-          <span>{state}</span>
-        </div>
-        <div className="row">
-          <label>City:</label>
-          <span>{city}</span>
-        </div>
-        <div className="row">
-          <label>Pin Code:</label>
-          <span>{pinCode}</span>
-        </div>
-        <div className="row">
-          <label>Organization:</label>
-          <span>{category_Id.category}</span>
-        </div>
-        <div className="row">
-          <label>Organization SubCategory:</label>
-          <span>{category_Id.subCategory}</span>
-        </div>
-        <div className="row">
-          <label>location:</label>
-          <span>{business_Id.location}</span>
-        </div>
+        {renderDetailRow("First Name", firstName)}
+        {renderDetailRow("Last Name", lastName)}
+        {renderDetailRow("Email", email)}
+        {renderDetailRow("Phone Number", phoneNumber)}
+        {renderDetailRow("Status", status)}
+        {renderDetailRow("Country", country)}
+        {renderDetailRow("State", state)}
+        {renderDetailRow("City", city)}
+        {renderDetailRow("Pin Code", pinCode)}
+        {renderDetailRow("Organization", category)}
+        {renderDetailRow("Organization SubCategory", subCategory)}
+        {renderDetailRow("Location", business_Id?.location)}
         <hr />
       </div>
     </div>

@@ -7,6 +7,8 @@ import Custom_Centered_DynamicDialog from "@/components/ui/Dialog/Center_Dialog"
 import { delete_Staff_Account } from "@/api/Zensight/api";
 import { FilterMatchMode } from 'primereact/api';
 import { useForm } from 'react-hook-form';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 
 const UserCustomerProfile_DataTable = () => {
@@ -145,15 +147,16 @@ const UserCustomerProfile_DataTable = () => {
     setTableDataLoading(false)
   }
 
+
   const renderHeader = () => {
     return (
       <>
         <h4>Business Profiles</h4>
-        <div className="search-box">
-          <input value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-          <button className='loadBtn'>
-            <i className={tableDataLoading ? "pi pi-spin pi-spinner" : "pi pi-search"}></i>
-          </button>
+        <div style={{ display: "flex", gap: "1rem" }} className="right-section">
+          <div className="p-inputgroup flex-1">
+            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
+            <Button loading={tableDataLoading} icon="pi pi-search" className='pr ' />
+          </div>
         </div>
       </>
     );
@@ -162,10 +165,10 @@ const UserCustomerProfile_DataTable = () => {
 
   const rowFilterTemplate = (opt, formField) => {
     return <>
-      <input {...register(formField)} style={{ padding: "4px 10px" }} />
-      <button className='loadBtn' onClick={() => submitFilterHandler()}>
-        <i className={tableDataLoading ? "pi pi-spin pi-spinner" : "pi pi-search"}></i>
-      </button>
+      <div className="p-inputgroup flex-1">
+        <InputText style={{ minWidth: "200px" }} {...register(formField)} placeholder="Keyword Search" />
+        <Button loading={tableDataLoading} onClick={() => submitFilterHandler()} icon="pi pi-search" className='pr ' />
+      </div>
     </>
   };
 
@@ -173,8 +176,10 @@ const UserCustomerProfile_DataTable = () => {
     <>
       <DataTable sortMode="multiple"
         removableSort
-        pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
-        showGridlines value={data} paginator rows={10}
+        pt={{
+          root: { className: "pr" },
+          headerRow: { className: "pr" },
+        }} showGridlines value={data} paginator rows={10}
         rowsPerPageOptions={[5, 10, 25, 50]}
         globalFilterFields={["email", "firstName", "lastName", "phoneNumber"]}
         loading={tableDataLoading}
@@ -182,7 +187,6 @@ const UserCustomerProfile_DataTable = () => {
         filters={filters}
         filterDisplay="row"
         emptyMessage="Profiles not found"
-        paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
       >
         <Column sortable field={"_id"} header={"Unique Id"} />
         <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "firstName")} field={"firstName"} header={"First Name"} />

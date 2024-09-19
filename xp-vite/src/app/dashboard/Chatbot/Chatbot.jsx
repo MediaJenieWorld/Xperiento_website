@@ -117,27 +117,4 @@ const Chatbot = () => {
     );
 }
 
-// <DataTable sortMode="multiple"
-// removableSort
-// pt={{ paginator: { current: { style: { color: "var(--star-color)" } } } }}
-// showGridlines value={data} paginator rows={10}
-// rowsPerPageOptions={[5, 10, 25, 50]}
-// globalFilterFields={["email", "firstName", "lastName", "phoneNumber"]}
-// loading={tableDataLoading}
-// header={header}
-// filters={filters}
-// filterDisplay="row"
-// emptyMessage="Profiles not found"
-// paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-// >
-// <Column sortable field={"_id"} header={"Unique Id"} />
-// <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "firstName")} field={"firstName"} header={"First Name"} />
-// <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "lastName")} field={"lastName"} header={"Last Name"} />
-// <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "email")} field={"email"} header={"Email Address"} />
-// <Column sortable filter filterElement={(options) => rowFilterTemplate(options, "phoneNumber")} field={"phoneNumber"} header={"Phone Number"} />
-// {/* <Column header="Email" filterField="country.name" style={{ minWidth: '12rem' }} field={"email"} filter filterPlaceholder="Search by Email" /> */}
-// <Column sortable body={roleBodyTemplate} header={"Role"} />
-// <Column sortable body={actionBodyTemplate} header={"Actions"} />
-// </DataTable>
-
 export default Chatbot;
