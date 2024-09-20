@@ -115,7 +115,11 @@ function Subscription() {
                                     <Custom_Centered_DynamicDialog
                                         label="info"
                                         dialogStyles={{ width: "max-content" }}
-                                        boxStyles={{ backgroundColor: "rgb(91 90 90 / 80%)", borderRadius: "10px", padding: "1rem", width: "90%", justifyContent: "flex-start" }}
+                                        boxStyles={{
+                                            backgroundColor: "rgb(91 90 90 / 80%)", borderRadius: "10px", padding: "1rem",
+                                            maxWidth: "600px",
+                                            width: "90%", justifyContent: "flex-start"
+                                        }}
                                         LabelChildren={() => <i className="pi pi-info-circle"></i>}
                                     >
                                         <div className="dialog-content">
@@ -124,16 +128,12 @@ function Subscription() {
                                                 <p style={{ color: "var(--star-color)" }}>{subs.name}</p>
                                             </div>
                                             <div className="flex-column">
-                                                <h4>What you can view:</h4>
+                                                <h4>Services you can access:</h4>
                                                 <p style={{ color: "var(--star-color)" }}>{subs.description}</p>
                                             </div>
                                             <div className="flex-column">
-                                                <h4>Insight Limit:</h4>
+                                                <h4>Customer Profile</h4>
                                                 <p style={{ color: "var(--star-color)" }}>{subs.insightLimit}</p>
-                                            </div>
-                                            <div className="flex-column">
-                                                <h4>Vailidity:</h4>
-                                                <p style={{ color: "var(--star-color)" }}>{subs.validity} days</p>
                                             </div>
                                             <div className="flex-column">
                                                 <h4>Price:</h4>

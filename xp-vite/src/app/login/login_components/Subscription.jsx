@@ -1,33 +1,7 @@
 import Custom_Centered_DynamicDialog from "@/components/ui/Dialog/Center_Dialog";
+import { subscriptionPacks } from "@/utils/SubPacks";
 // eslint-disable-next-line react/prop-types
 const SubscriptionPacksDetails = () => {
-
-  const subscriptionPacks = [
-    {
-      name: "FREE TRIAL",
-      price: "Free for 7 Days",
-      description: "Access to Zensight Clueberry Analytics",
-      customerProfile: "Zensight Clueberry Analytics",
-    },
-    {
-      name: "BRONZE",
-      price: "Rs. 250/Month",
-      description: "Access to Clueberry Analytics",
-      customerProfile: "only you can access Clueberry Customer Profile",
-    },
-    {
-      name: "SILVER",
-      price: "Rs. 600/Month",
-      description: "Access to Access to Zensight Clueberry Analytics",
-      customerProfile: "only you can access Zensight Clueberry Customer Profile",
-    },
-    {
-      name: "GOLD",
-      price: "Rs. 750/Month",
-      description: "Access to premium dashboard",
-      customerProfile: "you can access All ",
-    },
-  ];
 
   return (
     <div className="Subscription">

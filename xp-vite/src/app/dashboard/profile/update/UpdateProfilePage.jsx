@@ -6,6 +6,7 @@ import { viewProfile_Api } from "@/api/Main_Api";
 import { useEffect, useState } from "react";
 import Orgnazations from "@/app/login/login_components/orgnazationsCheckBox";
 import AddressForm from "@/app/login/login_components/AddressForm";
+import BackButton from "@/components/ui/BackButton";
 const UpdateProfilePage = () => {
     const [businessType, setBusinessType] = useState(null);
     const [user, setUser] = useState(null);
@@ -42,9 +43,10 @@ const UpdateProfilePage = () => {
     }, []);
     useEffect(() => {
         if (user) {
-            setBusinessType(user.organization)
+            setBusinessType(user?.category_Id?.category)
         }
     }, [user]);
+
     if (isLoading) {
         return (
             <div className="dashboard">
@@ -68,9 +70,8 @@ const UpdateProfilePage = () => {
             state,
             city,
             pinCode,
-            organization,
-            organization_SubCategory,
-            industrySegment,
+            business_Id,
+            category_Id
         } = user
         const y = {
             firstName,
@@ -79,13 +80,12 @@ const UpdateProfilePage = () => {
             state,
             city,
             pinCode,
-            organization,
-            organization_SubCategory,
-            industrySegment,
+            businessName: business_Id?.name,
+            category: category_Id?.category,
+            organization_SubCategory: category_Id?.subCategory,
         }
         objMap(y)
     }
-
 
     function objMap(obj) {
         Object.keys(obj).forEach((key) => {
@@ -98,6 +98,9 @@ const UpdateProfilePage = () => {
     }
     return (
         <div className="update_profile_page">
+            <div style={{ margin: "1rem 0" }} className="div">
+                <BackButton style={{ margin: " 0" }} href="/dashboard/User_Management" />
+            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h3>Update Profile Page</h3>
                 <div className="flex-column">
@@ -107,7 +110,7 @@ const UpdateProfilePage = () => {
                     <FormInput register={register} errors={errors} register_key={"lastName"} label={"Last Name"} />
                 </div>
                 <div className="flex-column">
-                    <FormInput register={register} errors={errors} register_key={"industrySegment"} label={"Business Name"} type="text" />
+                    <FormInput register={register} inputProps={{ value: "hello" }} errors={errors} register_key={"businessName"} label={"Business Name"} type="text" />
                 </div>
                 <AddressForm setValue={setValue} errors={errors} register={register} profileUpdateData={{
                     country: user.country,

@@ -7,17 +7,9 @@ import { Dropdown } from 'primereact/dropdown';
 
 const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpdateData }) => {
 
-  const [country, setCountry] = useState(''); // default country
-  const [state, setState] = useState(''); // default state
-  const [city, setCity] = useState(''); // default city
-
-  useEffect(() => {
-    if (profileUpdateData) {
-      setCountry(profileUpdateData.country)
-      setState(profileUpdateData.state)
-      setCity(profileUpdateData.city)
-    }
-  }, [])
+  const [country, setCountry] = useState(profileUpdateData?.country || ''); // default country
+  const [state, setState] = useState(profileUpdateData?.state || ''); // default state
+  const [city, setCity] = useState(profileUpdateData?.city || ''); // default city
 
   useEffect(() => {
     setValue('country', country);
@@ -39,6 +31,24 @@ const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpd
     setCity(e.target.value);
   };
 
+  const dropDownPassthrough = {
+    filterContainer: { className: "pr" },
+    header: { className: "pr" },
+    list: { className: "pr" },
+    root: {
+      style: {
+        backgroundColor: "transparent",
+        borderRadius: "0px",
+        borderLeftColor: "transparent",
+        borderTopColor: "transparent",
+        borderRightColor: "transparent",
+        borderBottomColor: "white",
+        outline: "none",
+        boxShadow: "none"
+      }
+    }
+  }
+
   return (
     <>
       <div data-state={isCreatingAccount} className="flex-column">
@@ -50,22 +60,7 @@ const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpd
           defaultValue={country} value={country} onChange={handleCountryChange} options={Country.getAllCountries()}
           optionLabel="name"
           optionValue='isoCode'
-          pt={{
-            filterContainer: { className: "pr" },
-            header: { className: "pr" },
-            list: { className: "pr" },
-            root: {
-              style: {
-                backgroundColor: "transparent",
-                borderRadius: "0px",
-                borderLeftColor: "transparent",
-                borderTopColor: "transparent",
-                borderRightColor: "transparent",
-                outline: "none",
-                boxShadow: "none"
-              }
-            }
-          }} placeholder="Select Country " className="country-list pr w-full" highlightOnSelect={true} />
+          pt={dropDownPassthrough} placeholder="Select Country " className="country-list pr w-full" highlightOnSelect={true} />
         {errors?.country && (
           <span
             style={{ fontSize: ".7rem", fontWeight: "700", color: "red" }}
@@ -76,18 +71,15 @@ const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpd
       </div>
 
       <div className="flex-column">
-
         <label>State:</label>
-        <select {...register('state', {
+        <Dropdown   {...register('state', {
           required: "State is required",
-        })} defaultValue={state} value={state} onChange={handleStateChange}>
-          <option value="">Select State</option>
-          {State.getStatesOfCountry(country).map((state) => (
-            <option key={state.isoCode} value={state.isoCode}>
-              {state.name}
-            </option>
-          ))}
-        </select>
+        })}
+          filterBy='name' filter
+          defaultValue={state} value={state} onChange={handleStateChange} options={State.getStatesOfCountry(country)}
+          optionLabel="name"
+          optionValue='isoCode'
+          pt={dropDownPassthrough} placeholder="Select State" className="country-list pr w-full" highlightOnSelect={true} />
         {errors?.state && (
           <span
             style={{ fontSize: ".7rem", fontWeight: "700", color: "red" }}
@@ -97,18 +89,15 @@ const AddressForm = ({ errors, setValue, register, isCreatingAccount, profileUpd
         )}
       </div>
       <div className="flex-column">
-
         <label>City:</label>
-        <select {...register('city', {
+        <Dropdown   {...register('city', {
           required: "City is required",
-        })} defaultValue={city} onChange={handleCityChange}>
-          <option value="">Select City</option>
-          {City.getCitiesOfState(country, state).map((city) => (
-            <option key={city.name} value={city.name}>
-              {city.name}
-            </option>
-          ))}
-        </select>
+        })}
+          filterBy='name' filter
+          defaultValue={city} value={city} onChange={handleCityChange} options={City.getCitiesOfState(country, state)}
+          optionLabel="name"
+          optionValue='name'
+          pt={dropDownPassthrough} placeholder="Select City" className="country-list pr w-full" highlightOnSelect={true} />
         {errors?.city && (
           <span
             style={{ fontSize: ".7rem", fontWeight: "700", color: "red" }}

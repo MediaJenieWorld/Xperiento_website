@@ -19,6 +19,8 @@ const CreateStaffTokenPage = () => {
     const stepperRef = useRef(null);
     const [visible, setVisible] = useState(false);
 
+
+
     async function tokenHandler() {
         if (value == "") return
         setLoading(true)
@@ -26,7 +28,7 @@ const CreateStaffTokenPage = () => {
             const res = await generateAddStaffTokenHandler({ email: value })
             if (res.data.success) {
                 setToken(res.data.data)
-                toast.success("Successfully Created Token")
+                toast.success(`An invitation has been sent to your staff at the email address (${value})`)
             }
             else {
                 toast.error(res.data.data)
@@ -98,7 +100,7 @@ const CreateStaffTokenPage = () => {
                 onHide={() => { if (!visible) return; setVisible(false); }} draggable={false} resizable={false}>
                 <div className="m-0">
                     <h3>
-                        To create your staff token, please follow these simple steps:
+                        To add your staff, please follow these simple steps:
                     </h3>
                     <ol style={{ display: "flex", flexDirection: "column", gap: "1rem", }}>
                         <li>

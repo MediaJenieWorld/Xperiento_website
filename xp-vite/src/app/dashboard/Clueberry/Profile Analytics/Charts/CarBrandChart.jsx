@@ -33,9 +33,8 @@ const labels = [
     "honda",
     "ford",
     "hyundai",
-    "ram",
     "bmw",
-    "kia"
+    "kia",
 ]
 
 const backgroundColor = [

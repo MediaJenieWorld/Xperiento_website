@@ -17,7 +17,6 @@ const UserCustomerProfile_DataTable = () => {
   const [deleteActionloading, setdeleteActionLoading] = useState(false)
   const [data, setData] = useState(null)
   const [tableDataLoading, setTableDataLoading] = useState(true)
-  const [globalFilterValue, setGlobalFilterValue] = useState('');
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -48,18 +47,6 @@ const UserCustomerProfile_DataTable = () => {
     setdeleteActionLoading(false)
   }
 
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters['global'].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-    setTableDataLoading(false)
-  };
-
-
   async function getData() {
     try {
       const res = await getUser_Management_Dashboard_Profiles()
@@ -87,7 +74,7 @@ const UserCustomerProfile_DataTable = () => {
 
   const actionBodyTemplate = (data) => {
     return <>
-      {data.role !== "admin" && <div className='actions'>
+      {data.role === "admin" && <div style={{ display: "flex", alignItems: "center" }} className='actions'>
         <a style={{ textDecoration: "none" }} href={`/dashboard/User_Management/update-staff-profile/${data._id}`}>
           <i style={{ color: "#03A9F4" }} className='pi pi-pen-to-square'></i>
         </a>
@@ -153,10 +140,6 @@ const UserCustomerProfile_DataTable = () => {
       <>
         <h4>Business Profiles</h4>
         <div style={{ display: "flex", gap: "1rem" }} className="right-section">
-          <div className="p-inputgroup flex-1">
-            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
-            <Button loading={tableDataLoading} icon="pi pi-search" className='pr ' />
-          </div>
         </div>
       </>
     );

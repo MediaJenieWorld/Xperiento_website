@@ -62,12 +62,11 @@ const Visitor_Insight_Page = () => {
             if (res.data.success) {
                 if (res.data.data.length === 0) {
                     toast.info("Data Not Found")
-                } else {
-                    if (res.data.filters.length === 0) {
-                        toast.info("Filters Not Found")
-                    } else {
+                    if (res.data.filters.length > 0) {
                         setFilters(res.data.filters)
                     }
+                }
+                else {
                     setChartData(res.data.data)
                 }
             }
@@ -131,7 +130,7 @@ const Visitor_Insight_Page = () => {
                         </Fragment>)
                     )}
                     <Button size="small" icon="pi pi-search" label="Find"
-                        style={{ fontWeight: "600" }} severity="secondary" className="pr" />
+                        style={{ fontWeight: "600", backgroundColor: "var(--star-color)", color: "var(--main-Bg)" }} className="pr" />
                 </form>}
             </div>
             {Graph}
@@ -158,7 +157,7 @@ const FilterComponent = ({ filter, register, setValue }) => {
                         pt={{ list: { className: "pr" } }}
                         placeholder={filter.label} className="pr" />
                     <Button onClick={() => setSelectedValue("")} type="reset" size="small" icon="pi pi-filter-slash"
-                        style={{ fontWeight: "600" }} severity="warning" className="pr" />
+                        style={{ fontWeight: "600", backgroundColor: "var(--star-color)", color: "var(--main-Bg)" }} className="pr" />
                 </div>
             </div>
             {selectedValue && hasChildren && (

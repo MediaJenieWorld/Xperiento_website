@@ -8,6 +8,7 @@ import LikeDislikeFooter from "@/components/ui/dashboard/PostCard/LikeDislikeFoo
 import MyTodoAndLikeCount from "@/components/ui/dashboard/UserLikeAndTodo/page";
 import { toast } from "react-toastify";
 import ErrorPage from "@/ErrorPage";
+import BackButton from "@/components/ui/BackButton";
 
 const ServiceBoard = lazy(() =>
   import("@/components/CreateAccount/ServiceBoard")
@@ -94,7 +95,11 @@ const ZensightDashboardPage = () => {
 
   return (
     <div className="Dashboard">
+
       <div className="header">
+        <div style={{ margin: "1rem " }} className="div">
+          <BackButton style={{ margin: " 0" }} href="/dashboard" />
+        </div>
         <div className="title">
           <h3>
             {" "}

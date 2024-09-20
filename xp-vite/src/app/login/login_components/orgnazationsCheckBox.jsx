@@ -41,33 +41,34 @@ const Orgnazations = ({ category_Id, register, errors, businessType, isCreatingA
     });
     return (
         <>
-            <div data-state={isCreatingAccount} className="radio-btn">
-                {categoriesAndSub.map((category, ind) => {
-                    const isActive = businessType === category._id ? true : false;
-                    return <div data-tooltip={category._id} onClick={() => setBusinessType(category._id)} key={ind} className="box">
-                        <img height={60} width={60} src={category.icon[0].includes("http") ? category.icon[0] : "/assets/account/" + category.icon[0]} alt={category._id} />
-                        {isActive && <i
-                            style={{ color: "var(--star-color)" }}
-                            className="pi pi-check-circle"
-                        ></i>}
-                    </div>
-                })}
-            </div>
-            {businessType == null && (
-                <span
-                    style={{ fontSize: ".7rem", fontWeight: "700", color: "red" }}
-                >
-                    Organisation is Required
-                </span>
-            )}
             <div id="subCategory" data-state={isCreatingAccount} className="flex-column subCategory">
-                <label>Organisation Sub Category:</label>
+
+                <label>Select Business Category:</label>
+                <div data-state={isCreatingAccount} className="radio-btn">
+
+                    {categoriesAndSub.map((category, ind) => {
+                        const isActive = businessType === category._id ? true : false;
+                        return <div data-tooltip={category._id} onClick={() => setBusinessType(category._id)} key={ind} className="box">
+                            <img height={60} width={60}
+                                src={category.icon[0].includes("http") ? category.icon[0] : "/assets/account/" + category.icon[0]} alt={category._id} />
+                            {isActive && <i
+                                style={{ color: "var(--star-color)" }}
+                                className="pi pi-check-circle"
+                            ></i>}
+                        </div>
+                    })}
+                </div>
+                {businessType == null && (
+                    <span
+                        style={{ fontSize: ".7rem", fontWeight: "700", color: "red" }}
+                    >
+                        Organisation is Required
+                    </span>
+                )}
+            </div>
+            <div id="subCategory" data-state={isCreatingAccount} className="flex-column subCategory">
+                <label>Select Sub-category:</label>
                 <div className="items">
-                    {!businessType &&
-                        <div className="item" >
-                            <input type="radio" defaultChecked={true} value={""} />
-                            <label >Select Organization</label>
-                        </div>}
                     {businessType && formattedResults[businessType]?.map((category, index) => (
                         <div className="item" key={index}>
                             <input id={category} type="radio" value={category} defaultChecked={category_Id?.subCategory === category ? true : false} {...register('organization_SubCategory')} />

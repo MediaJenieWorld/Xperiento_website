@@ -95,7 +95,7 @@ const UserProfilePage = () => {
         {renderDetailRow("Pin Code", pinCode)}
         {renderDetailRow("Organization", category)}
         {renderDetailRow("Organization SubCategory", subCategory)}
-        {renderDetailRow("Location", business_Id?.location)}
+        {renderDetailRow("Business Name", business_Id?.name)}
         <hr />
       </div>
     </div>
