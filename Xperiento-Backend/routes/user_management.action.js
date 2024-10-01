@@ -6,6 +6,7 @@ const BusinessCategory = require("../models/BusinessCategory");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { sendAddStaffTokenEmail } = require("../utils/email_template");
+const Staff_token = require("../models/Staff_Token");
 
 require("dotenv").config();
 const encodeKey = process.env.ENCODE_KEY;
@@ -250,13 +251,15 @@ router.post("/generateAddStaffToken", async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      { user: { admin_email: user.email, staffEmail: staff.email } },
-      encodeKey,
-      {
-        expiresIn: login_Token_Vaildity,
-      }
-    );
+    const token = generateRandomCode();
+
+    const createStaff_TokenVerify = new Staff_token({
+      admin: user._id,
+      staff_email: staff.email,
+      code: token,
+    });
+
+    await createStaff_TokenVerify.save();
 
     let transporter = nodemailer.createTransport({
       service: "gmail",
@@ -329,6 +332,18 @@ router.post("/getFiltered_CustomersProfile", async (req, res) => {
     res.status(500).json({ data: error.message, success: false });
   }
 });
+
+function generateRandomCode() {
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var code = "";
+
+  for (var i = 0; i < 6; i++) {
+    code += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return code;
+}
 
 function filterPayload(obj) {
   let x = {};

@@ -17,6 +17,7 @@ const { add_freeTrail_Subscription } = require("../utils/create_subscription");
 const BusinessCategory = require("../models/BusinessCategory");
 const Branch = require("../models/branch_model");
 const { default: mongoose } = require("mongoose");
+const Staff_token = require("../models/Staff_Token");
 
 const encodeKey = process.env.ENCODE_KEY;
 const user_mail_address = process.env.MAIL_ADDRESS;
@@ -198,9 +199,24 @@ router.post("/sendCodeToEmail", async (req, res) => {
         data: "Branch is Already Exists! write branch_Id in Businesss Name",
       });
     }
-    const isIdOrNewName = decodeStaffToken(payload.industrySegment, encodeKey);
-    if (isIdOrNewName) {
+
+    const isIdOrNewName = await Staff_token.findOne({
+      code: payload.industrySegment,
+      staff_email: email,
+    }).lean();
+    if (isIdOrNewName?.code) {
       payload.isBranchExists = true;
+      const currentDate = new Date();
+      const expiresInDate = new Date(isIdOrNewName.expiresIn);
+
+      const isExpired = currentDate.getTime() > expiresInDate.getTime();
+
+      if (isExpired) {
+        return res.status(409).json({
+          success: false,
+          data: "Staff Token Code Expired",
+        });
+      }
     } else {
       payload.isBranchExists = false;
     }
@@ -280,17 +296,16 @@ router.post("/confirmVerifyEmail", async (req, res) => {
 
     verifyCode.isBranchExists;
     if (verifyCode.isBranchExists) {
-      const tokenDecode = decodeStaffToken(
-        verifyCode.branchCode,
-        encodeKey,
-        res
-      );
+      const tokenDecode = await Staff_token.findOne({
+        code: verifyCode.industrySegment,
+      }).lean();
 
       const findAdmin = await User.findOne(
-        { email: tokenDecode.user.admin_email, role: "admin" },
-        { business_Id: 1,category_Id:1 }
+        { _id: tokenDecode.admin, role: "admin" },
+        { business_Id: 1, category_Id: 1 }
       ).lean();
-      if (tokenDecode.user.staffEmail !== verifyCode.email) {
+
+      if (tokenDecode.staff_email !== verifyCode.email) {
         return res
           .status(200)
           .json({ data: "Staff Email is not Matched", success: false });
@@ -321,6 +336,7 @@ router.post("/confirmVerifyEmail", async (req, res) => {
     await add_freeTrail_Subscription(user);
 
     await Verify_User.deleteOne({ _id: verifyCode._id });
+    await Staff_token.deleteOne({ code: verifyCode.industrySegment });
 
     delete user.password;
 
