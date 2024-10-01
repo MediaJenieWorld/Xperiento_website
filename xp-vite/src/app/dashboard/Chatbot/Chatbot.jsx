@@ -7,6 +7,9 @@ import { FilterMatchMode } from 'primereact/api';
 import { useForm } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 
+import Sentiment from 'sentiment';
+const sentiment = new Sentiment();
+
 const Chatbot = () => {
     const { getValues, register } = useForm()
 
@@ -72,6 +75,12 @@ const Chatbot = () => {
         </>
     };
 
+    const renderEmotionBody = (data) => {
+        const emotion = sentiment.analyze(data.message)
+        const output = getSentimentLabel(emotion.score)
+        return <p>{output}</p>
+    }
+
     return (
         <div className='Chatbot'>
             <div className="header">
@@ -108,6 +117,7 @@ const Chatbot = () => {
                             field="message" header="Message Preview" />
                         <Column
                             sortable
+                            body={renderEmotionBody}
                             filter filterElement={(options) => rowFilterTemplate(options, "emotion")}
                             field="emotion" header="Emotion" />
                     </DataTable>
@@ -116,5 +126,21 @@ const Chatbot = () => {
         </div>
     );
 }
+
+
+
+const getSentimentLabel = (score) => {
+    if (score > 5) {
+        return 'Interested';
+    } else if (score > 0) {
+        return 'Curious';
+    } else if (score === 0) {
+        return 'Neutral';
+    } else if (score >= -5) {
+        return 'Frustrated';
+    } else {
+        return 'Angry';
+    }
+};
 
 export default Chatbot;

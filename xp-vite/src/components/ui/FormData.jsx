@@ -27,7 +27,25 @@ const FormDataComponent = ({ formData, register }) => {
 };
 
 const Section_field = ({ field, register }) => {
-    const [selected_value, set_selected_value] = useState(null)
+    const [selected_values, set_selected_values] = useState(null)
+
+    const valueSelectHandler = (value) => {
+        if (selected_values == null) {
+            set_selected_values([value]);
+        } else {
+            set_selected_values(prev => {
+                const x = [...prev];
+                const isAlready = x.some(val => val === value);
+                if (isAlready) {
+                    return x.filter(val => val !== value);
+                } else {
+                    return [...x, value];
+                }
+            });
+        }
+    };
+
+
     return <>
         <li className="flex-column" data-render-type={field.field_Type}>
             <label>{field.label}</label>
@@ -39,7 +57,9 @@ const Section_field = ({ field, register }) => {
                         const unique_id = field.register_key + "_" + value.value
                         return (
                             <div className={"flex-col " + field.view_Type} key={value.value}>
-                                <input onClick={() => set_selected_value(value)} type={field.field_Type === "multi-select" ? "checkbox" : "radio"} id={unique_id} value={value.value} {...register(`${field?.register_key}`)} />
+                                <input onClick={() => valueSelectHandler(value)}
+                                    type={field.field_Type === "multi-select" ? "checkbox" : "radio"}
+                                    id={unique_id} value={value.value} {...register(`${field?.register_key}`)} />
                                 <label className="flex-col" htmlFor={unique_id}>
                                     {value.iconURL && <img className="image-icon round-md" height={60} width={60} src={value.iconURL} alt={value.label} />}
                                     <span className={field.view_Type}> {value.label}</span></label>
@@ -48,7 +68,17 @@ const Section_field = ({ field, register }) => {
                     })}
             </div>
         </li>
-        {selected_value?.children && <Section_field field={selected_value?.children} register={register} />}
+        {selected_values !== null && <>
+            {
+                selected_values.map((this_section, index) => {
+                    if (!this_section?.children) return
+                    return <Fragment key={index}>
+                        <Section_field field={this_section?.children} register={register} />
+                    </Fragment>
+                })
+            }
+        </>
+        }
     </>
 }
 
