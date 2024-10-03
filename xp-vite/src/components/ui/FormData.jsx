@@ -29,7 +29,10 @@ const FormDataComponent = ({ formData, register }) => {
 const Section_field = ({ field, register }) => {
     const [selected_values, set_selected_values] = useState(null)
 
-    const valueSelectHandler = (value) => {
+    const valueSelectHandler = (value, selectType, field) => {
+        if (selectType !== "multi-select") {
+            return set_selected_values([value]);
+        }
         if (selected_values == null) {
             set_selected_values([value]);
         } else {
@@ -57,7 +60,7 @@ const Section_field = ({ field, register }) => {
                         const unique_id = field.register_key + "_" + value.value
                         return (
                             <div className={"flex-col " + field.view_Type} key={value.value}>
-                                <input onClick={() => valueSelectHandler(value)}
+                                <input onClick={() => valueSelectHandler(value, field.field_Type, field)}
                                     type={field.field_Type === "multi-select" ? "checkbox" : "radio"}
                                     id={unique_id} value={value.value} {...register(`${field?.register_key}`)} />
                                 <label className="flex-col" htmlFor={unique_id}>
