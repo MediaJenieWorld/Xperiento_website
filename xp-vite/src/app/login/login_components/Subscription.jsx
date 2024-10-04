@@ -1,3 +1,4 @@
+import InfoRender from "@/app/dashboard/Subscription/InfoRender";
 import Custom_Centered_DynamicDialog from "@/components/ui/Dialog/Center_Dialog";
 import { subscriptionPacks } from "@/utils/SubPacks";
 // eslint-disable-next-line react/prop-types
@@ -21,26 +22,16 @@ const SubscriptionPacksDetails = () => {
                 <Custom_Centered_DynamicDialog
                   label="info"
                   dialogStyles={{ width: "max-content" }}
-                  boxStyles={{ backgroundColor: "rgb(91 90 90 / 80%)", borderRadius: "10px", padding: "1rem", width: "90%", justifyContent: "flex-start" }}
+                  boxStyles={{
+                    maxWidth: "600px",
+                    backgroundColor: "rgb(91 90 90 / 80%)",
+                    borderRadius: "10px", padding: "1rem", width: "90%",
+                    justifyContent: "flex-start"
+                  }}
                   LabelChildren={() => <i className="pi pi-info-circle"></i>}
                 >
                   <div className="dialog-content">
-                    <div className="flex-column">
-                      <h4>Subscription Pack Name:</h4>
-                      <p style={{ color: "var(--star-color)" }}>{subs.name}</p>
-                    </div>
-                    <div className="flex-column">
-                      <h4>Services you can access:</h4>
-                      <p style={{ color: "var(--star-color)" }}>{subs.description}</p>
-                    </div>
-                    {/* <div className="flex-column">
-                      <h4>Customer Profile</h4>
-                      <p style={{ color: "var(--star-color)" }}>{subs.insightLimit}</p>
-                    </div> */}
-                    <div className="flex-column">
-                      <h4>Price:</h4>
-                      <p style={{ color: "var(--star-color)" }}>{subs.price}</p>
-                    </div>
+                    <InfoRender subs={subs} />
                   </div>
                 </Custom_Centered_DynamicDialog>
               </div>

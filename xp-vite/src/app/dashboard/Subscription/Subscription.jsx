@@ -9,6 +9,7 @@ import { subscriptionPacks } from '@/utils/SubPacks';
 import "./styles.scss"
 import { toast } from 'react-toastify';
 import BackButton from "@/components/ui/BackButton"
+import InfoRender from './InfoRender';
 
 
 function Subscription() {
@@ -118,27 +119,13 @@ function Subscription() {
                                         boxStyles={{
                                             backgroundColor: "rgb(91 90 90 / 80%)", borderRadius: "10px", padding: "1rem",
                                             maxWidth: "600px",
-                                            width: "90%", justifyContent: "flex-start"
+                                            width: "90%",
+                                            justifyContent: "flex-start"
                                         }}
                                         LabelChildren={() => <i className="pi pi-info-circle"></i>}
                                     >
                                         <div className="dialog-content">
-                                            <div className="flex-column">
-                                                <h4>Subscription Pack Name:</h4>
-                                                <p style={{ color: "var(--star-color)" }}>{subs.name}</p>
-                                            </div>
-                                            <div className="flex-column">
-                                                <h4>Services you can access:</h4>
-                                                <p style={{ color: "var(--star-color)" }}>{subs.description}</p>
-                                            </div>
-                                            {/* <div className="flex-column">
-                                                <h4>Customer Profile</h4>
-                                                <p style={{ color: "var(--star-color)" }}>{subs.insightLimit}</p>
-                                            </div> */}
-                                            <div className="flex-column">
-                                                <h4>Price:</h4>
-                                                <p style={{ color: "var(--star-color)" }}>{subs.price}</p>
-                                            </div>
+                                            <InfoRender subs={subs} />
                                         </div>
                                     </Custom_Centered_DynamicDialog>
                                     {/* <i className="pi pi-info-circle"></i> */}

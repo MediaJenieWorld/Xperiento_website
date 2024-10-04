@@ -5,12 +5,14 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { reviewData } from "./const";
 
+import { Rating } from "primereact/rating";
 
 import Sentiment from 'sentiment';
 const sentiment = new Sentiment();
 
 const Reputation_management = () => {
-    const [visible, setVisible] = useState(false);
+    const [tutorialModel, setTutorialModel] = useState(false);
+    const [value, setValue] = useState(null);
     const [urlModel, setUrlModel] = useState(false);
     const [data, setData] = useState(null);
     const [amazon_review_Data, setAmazon_review_Data] = useState({
@@ -21,13 +23,10 @@ const Reputation_management = () => {
 
     useEffect(() => {
         getDataHandler()
-
         if (window) {
-            const isAlreadyVisited = sessionStorage.getItem("isVisited_Reputation_management_page")
-            console.log(isAlreadyVisited);
-            if (isAlreadyVisited === null) {
-                setVisible(true)
-            }
+            setTimeout(() => {
+                setTutorialModel(true)
+            }, 1200);
         }
     }, [])
 
@@ -52,7 +51,6 @@ const Reputation_management = () => {
             const output = getSentimentLabel(emotion.score)
             getAllReview.push(output)
         }
-        console.log("getAllReview", getAllReview);
 
         const positive = getAllReview.filter(val => val === "Positive").length
         const negative = getAllReview.filter(val => val === "Negative").length
@@ -65,12 +63,11 @@ const Reputation_management = () => {
     }
     return (
         <div className='Reputation_management'>
-            <Dialog header="Tutorial" visible={visible} position={"top"} style={{ width: '90vw' }}
+            <Dialog header="" visible={tutorialModel} position={"center"} style={{ width: '90vw' }}
                 className='pr'
                 onHide={() => {
-                    if (!visible) return;
-                    sessionStorage.setItem("isVisited_Reputation_management_page", false)
-                    setVisible(false);
+                    if (!tutorialModel) return;
+                    setTutorialModel(false);
                 }} draggable={false} resizable={false}>
                 <div className="m-0">
                     <h3>
@@ -122,11 +119,7 @@ const Reputation_management = () => {
                         <i className="pi pi-amazon"></i>
                         <p>{data?.length} Reviews</p>
                         <div className="stars">
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
+                            <Rating value={value} onChange={(e) => setValue(e.value)} cancel={false} />
                         </div>
                     </div>
                     <div className="box">
@@ -143,11 +136,7 @@ const Reputation_management = () => {
                         <i className="pi pi-facebook"></i>
                         <p>876 Reviews</p>
                         <div className="stars">
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
-                            <i className="pi pi-star"></i>
+                            <Rating value={0} cancel={false} />
                         </div>
                     </div>
                     <div className="box">

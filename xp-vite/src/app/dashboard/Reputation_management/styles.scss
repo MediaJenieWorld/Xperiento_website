@@ -3,6 +3,8 @@
     padding: var(--main-p-x);
     min-height: calc(100vh - 60px);
     overflow-x: hidden;
+    filter: blur(4px);
+    animation: blurEffect 1s 1 forwards ease-in;
 
     .header {
         display: flex;
@@ -116,4 +118,10 @@
     }
 
 
+}
+
+@keyframes blurEffect {
+    100% {
+        filter: unset;
+    }
 }
