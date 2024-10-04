@@ -131,10 +131,10 @@ function Subscription() {
                                                 <h4>Services you can access:</h4>
                                                 <p style={{ color: "var(--star-color)" }}>{subs.description}</p>
                                             </div>
-                                            <div className="flex-column">
+                                            {/* <div className="flex-column">
                                                 <h4>Customer Profile</h4>
                                                 <p style={{ color: "var(--star-color)" }}>{subs.insightLimit}</p>
-                                            </div>
+                                            </div> */}
                                             <div className="flex-column">
                                                 <h4>Price:</h4>
                                                 <p style={{ color: "var(--star-color)" }}>{subs.price}</p>

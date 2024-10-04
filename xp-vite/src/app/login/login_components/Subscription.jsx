@@ -26,7 +26,7 @@ const SubscriptionPacksDetails = () => {
                 >
                   <div className="dialog-content">
                     <div className="flex-column">
-                      <h4>Subscription Pack Name:</h4>Customer Profile
+                      <h4>Subscription Pack Name:</h4>
                       <p style={{ color: "var(--star-color)" }}>{subs.name}</p>
                     </div>
                     <div className="flex-column">
