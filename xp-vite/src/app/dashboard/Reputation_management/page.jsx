@@ -3,7 +3,7 @@ import "./styles.scss"
 import { Dialog } from 'primereact/dialog';
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { reviewData } from "./const";
+import reviewData from "@/api/reviews.json";
 
 import { Rating } from "primereact/rating";
 
