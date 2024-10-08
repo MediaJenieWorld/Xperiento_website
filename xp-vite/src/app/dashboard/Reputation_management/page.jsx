@@ -104,9 +104,9 @@ const Reputation_management = () => {
                 className='pr'
                 onHide={() => { if (!urlModel) return; setUrlModel(false); }} draggable={false} resizable={false}>
                 <div className="text-input-wrapper">
-                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }} className="box">
-                        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }} className="text-input-header">
-                            <Checkbox />
+                    <div style={{ display: "flex", flexDirection: "column", gap: ".5rem" }} className="box">
+                        <div style={{ display: "flex", gap: "1rem", alignItems: "center", paddingLeft: "8px" }} className="text-input-header">
+                            {/* <Checkbox /> */}
                             <label htmlFor="Amazon">Amazon </label>
                         </div>
                         <div className="p-inputgroup flex-1">
@@ -114,9 +114,9 @@ const Reputation_management = () => {
                             <Button icon="pi pi-send" />
                         </div>
                     </div>
-                    <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: "1rem" }} className="box">
-                        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }} className="text-input-header">
-                            <Checkbox />
+                    <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: ".5rem" }} className="box">
+                        <div style={{ display: "flex", gap: "1rem", alignItems: "center", paddingLeft: "8px" }} className="text-input-header">
+                            {/* <Checkbox /> */}
                             <label htmlFor="Google">Google </label>
                         </div>
                         <div className="p-inputgroup flex-1">
@@ -136,24 +136,19 @@ const Reputation_management = () => {
             </div>
             <h3>Latest Reviews</h3>
             <div className="cards">
-                <div className="card">
+                <div className="card neutral">
                     <i className="pi pi-amazon"></i>
-                    <p>{amazon_review_Data?.negativeReview?.content || "Horrible product. Bad packaging. Wont recommend to anyone."}</p>
+                    <p>{amazon_review_Data?.neutralReview?.content || "Good quality product. Bad packaging and delivery."} </p>
                 </div>
-
-                <div className="card">
+                <div className="card positive">
                     <i className="pi pi-amazon"></i>
                     <p>{amazon_review_Data?.positiveReview?.content || "Great service. My issue was solved in 5 minutes. Excellent"}</p>
                 </div>
-                <div className="card">
+                <div className="card negative">
                     <i className="pi pi-amazon"></i>
-                    <p>
-                        {amazon_review_Data?.neutralReview?.content || "Good quality product. Bad packaging and delivery."}
-                    </p>
+                    <p>{amazon_review_Data?.negativeReview?.content || "Horrible product. Bad packaging. Wont recommend to anyone."}</p>
                 </div>
-
             </div>
-
             <div className="review-cards">
                 <div className="card">
                     <div className="top">

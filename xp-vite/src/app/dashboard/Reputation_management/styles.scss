@@ -45,15 +45,15 @@
                 font-size: 2rem;
             }
 
-            &:nth-of-type(1) {
+            &.negative {
                 border-bottom: 10px solid #ff0000;
             }
 
-            &:nth-of-type(2) {
+            &.positive {
                 border-bottom: 10px solid #01D123;
             }
 
-            &:nth-of-type(3) {
+            &.neutral {
                 border-bottom: 10px solid #FFA51F;
             }
         }
