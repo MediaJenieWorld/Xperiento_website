@@ -3,8 +3,8 @@ import "./styles.scss"
 import { Dialog } from 'primereact/dialog';
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import reviewData from "@/api/reviews.json";
-
+import reviewData from "@/api/amazon_reviews.json";
+import { Checkbox } from 'primereact/checkbox';
 import { Rating } from "primereact/rating";
 
 import Sentiment from 'sentiment';
@@ -12,13 +12,12 @@ const sentiment = new Sentiment();
 
 const Reputation_management = () => {
     const [tutorialModel, setTutorialModel] = useState(false);
-    const [value, setValue] = useState(null);
     const [urlModel, setUrlModel] = useState(false);
     const [data, setData] = useState(null);
     const [amazon_review_Data, setAmazon_review_Data] = useState({
-        positive: "Loading",
-        negative: "Loading",
-        neutral: "Loading"
+        positiveReview: { content: "Loading", numbers: "Loading" },
+        negativeReview: { content: "Loading", numbers: "Loading" },
+        neutralReview: { content: "Loading", numbers: "Loading" },
     });
 
     useEffect(() => {
@@ -45,22 +44,48 @@ const Reputation_management = () => {
     }
 
     function renderEmotionBody() {
-        let getAllReview = []
+        let totalRating = 0;
+        let positiveReview = {
+            numbers: 0,
+            content: ""
+        }
+        let negativeReview = {
+            numbers: 0,
+            content: ""
+        }
+        let neutralReview = {
+            numbers: 0,
+            content: ""
+        }
         for (let index = 0; index < data?.length; index++) {
+            totalRating += Number(data[index]?.rating);
             const emotion = sentiment.analyze(data[index].content)
             const output = getSentimentLabel(emotion.score)
-            getAllReview.push(output)
-        }
+            if (output === "Negative") {
+                negativeReview.numbers += 1
+                negativeReview.content = data[index]?.content
+            }
+            else if (output === "Positive") {
+                positiveReview.numbers += 1
+                positiveReview.content = data[index]?.content
+            }
+            else if (output === "Neutral") {
+                neutralReview.numbers += 1
+                neutralReview.content = data[index]?.content
+            }
 
-        const positive = getAllReview.filter(val => val === "Positive").length
-        const negative = getAllReview.filter(val => val === "Negative").length
-        const neutral = getAllReview.filter(val => val === "Neutral").length
+        }
+        const AvgRating = totalRating / data.length;
         return {
-            positive,
-            negative,
-            neutral
+            averageRating: AvgRating.toFixed(2),
+            positiveReview,
+            negativeReview,
+            neutralReview
         }
     }
+    console.log(amazon_review_Data);
+
+
     return (
         <div className='Reputation_management'>
             <Dialog header="" visible={tutorialModel} position={"center"} style={{ width: '90vw' }}
@@ -78,9 +103,27 @@ const Reputation_management = () => {
             <Dialog header="Add New URL To Track" visible={urlModel} position={"center"} style={{ width: '90vw' }}
                 className='pr'
                 onHide={() => { if (!urlModel) return; setUrlModel(false); }} draggable={false} resizable={false}>
-                <div className="p-inputgroup flex-1">
-                    <InputText placeholder="Enter url here..." />
-                    <Button icon="pi pi-send" />
+                <div className="text-input-wrapper">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }} className="box">
+                        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }} className="text-input-header">
+                            <Checkbox />
+                            <label htmlFor="Amazon">Amazon </label>
+                        </div>
+                        <div className="p-inputgroup flex-1">
+                            <InputText placeholder="Enter url here..." />
+                            <Button icon="pi pi-send" />
+                        </div>
+                    </div>
+                    <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: "1rem" }} className="box">
+                        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }} className="text-input-header">
+                            <Checkbox />
+                            <label htmlFor="Google">Google </label>
+                        </div>
+                        <div className="p-inputgroup flex-1">
+                            <InputText placeholder="Enter url here..." />
+                            <Button icon="pi pi-send" />
+                        </div>
+                    </div>
                 </div>
             </Dialog>
             <div className="header">
@@ -95,19 +138,17 @@ const Reputation_management = () => {
             <div className="cards">
                 <div className="card">
                     <i className="pi pi-amazon"></i>
-                    <p>Horrible product. Bad packaging. Wont recommend to anyone.</p>
+                    <p>{amazon_review_Data?.negativeReview?.content || "Horrible product. Bad packaging. Wont recommend to anyone."}</p>
                 </div>
 
                 <div className="card">
-                    <i className="pi pi-facebook"></i>
-                    <p>Great service.
-                        My issue was solved in 5 minutes. Excellent</p>
+                    <i className="pi pi-amazon"></i>
+                    <p>{amazon_review_Data?.positiveReview?.content || "Great service. My issue was solved in 5 minutes. Excellent"}</p>
                 </div>
                 <div className="card">
                     <i className="pi pi-amazon"></i>
                     <p>
-                        Good quality product.
-                        Bad packaging and delivery.
+                        {amazon_review_Data?.neutralReview?.content || "Good quality product. Bad packaging and delivery."}
                     </p>
                 </div>
 
@@ -119,31 +160,31 @@ const Reputation_management = () => {
                         <i className="pi pi-amazon"></i>
                         <p>{data?.length} Reviews</p>
                         <div className="stars">
-                            <Rating value={value} onChange={(e) => setValue(e.value)} cancel={false} />
+                            <Rating value={Math.floor(amazon_review_Data?.averageRating) || 0} cancel={false} />
                         </div>
                     </div>
                     <div className="box">
                         <div className="review-cat">
-                            <h4>Positive Reviews {amazon_review_Data?.positive} </h4>
-                            <h4>Negative Reviews {amazon_review_Data?.negative} </h4>
-                            <h4>Neutral Reviews {amazon_review_Data?.neutral} </h4>
+                            <h4>Positive Reviews {amazon_review_Data?.positiveReview.numbers} </h4>
+                            <h4>Negative Reviews {amazon_review_Data?.negativeReview.numbers} </h4>
+                            <h4>Neutral Reviews {amazon_review_Data?.neutralReview.numbers} </h4>
                         </div>
                         <button>View All Reviews</button>
                     </div>
                 </div>
                 <div className="card">
                     <div className="top">
-                        <i className="pi pi-facebook"></i>
-                        <p>876 Reviews</p>
+                        <i className="pi pi-google"></i>
+                        <p>0 Reviews</p>
                         <div className="stars">
                             <Rating value={0} cancel={false} />
                         </div>
                     </div>
                     <div className="box">
                         <div className="review-cat">
-                            <h4>Positive Reviews 859 </h4>
-                            <h4>Negative Reviews 148 </h4>
-                            <h4>Neutral Reviews 230 </h4>
+                            <h4>Positive Reviews 0 </h4>
+                            <h4>Negative Reviews 0 </h4>
+                            <h4>Neutral Reviews 0 </h4>
                         </div>
                         <button>View All Reviews</button>
                     </div>
@@ -165,5 +206,19 @@ const getSentimentLabel = (score) => {
     }
 };
 
+function getAverageRating(ratings) {
+    if (!Array.isArray(ratings) || ratings.length === 0) {
+        return 0; // Return 0 for empty or invalid input
+    }
+
+    const total = ratings.reduce((sum, item) => {
+        const ratingValue = parseFloat(item.rating); // Convert string to float
+        return sum + (isNaN(ratingValue) ? 0 : ratingValue); // Add to sum, handle NaN
+    }, 0);
+
+    const average = total / ratings.length;
+
+    return average;
+}
 
 export default Reputation_management
